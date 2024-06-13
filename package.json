@@ -12,15 +12,18 @@
   "dependencies": {
     "@plasmohq/messaging": "^0.6.2",
     "dayjs": "^1.11.11",
+    "numbro": "^2.5.0",
     "plasmo": "0.87.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/chrome": "0.0.258",
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
+    "@types/uuid": "^9.0.8",
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.12.2",
     "postcss": "^8.4.38",

@@ -2,12 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './scrollbar.scss';
 @import './typography.scss';
 @import './animate.scss';
 
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+html {
+  @apply w-full h-full no-scrollbar;
+}
+
+body {
+  @apply w-full h-full flex flex-row justify-center;
+}
+
 #__plasmo {
-  @apply w-full h-full;
+  @apply w-[360px] h-full min-h-[600px] bg-base-300;
 }
 
 input[type='number']::-webkit-inner-spin-button,

@@ -1,11 +1,11 @@
 import type { PlasmoMessaging } from '@plasmohq/messaging'
 
 export type PingRequest = {
-  id: number
+  id: string
 }
 
 export type PingResponse = {
-  id: number
+  id: string
   message: number
 }
 

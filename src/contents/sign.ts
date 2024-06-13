@@ -1,7 +1,6 @@
 import type { PlasmoCSConfig } from 'plasmo'
 import { sendToBackgroundViaRelay } from '@plasmohq/messaging'
-import type { PingRequest, PingResponse } from '~background/messages/ping'
-import { v4 } from 'uuid'
+import type { SignRequest, SignResponse } from '~background/messages/sign'
 
 export const config: PlasmoCSConfig = {
   world: 'MAIN',
@@ -9,11 +8,11 @@ export const config: PlasmoCSConfig = {
 }
 
 window.openblocks = Object.assign({}, window.openblocks, {
-  ping: async function () {
-    const re = await sendToBackgroundViaRelay<PingRequest, PingResponse>({
-      name: 'ping',
+  sign: async function () {
+    const re = await sendToBackgroundViaRelay<SignRequest, SignResponse>({
+      name: 'sign',
       body: {
-        id: v4(),
+        msg: '123',
       },
     })
     return re
