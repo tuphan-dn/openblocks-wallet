@@ -2,13 +2,15 @@ import { useCallback, useState } from 'react'
 import { sendToBackground } from '@plasmohq/messaging'
 import dayjs from 'dayjs'
 
+import type { PingRequest, PingResponse } from '~background/messages/ping'
+
 import '~styles/global.scss'
 
 function IndexPopup() {
   const [date, setDate] = useState(Date.now())
 
   const onPing = useCallback(async () => {
-    const { message }: { message: number } = await sendToBackground({
+    const { message } = await sendToBackground<PingRequest, PingResponse>({
       name: 'ping',
       body: {
         id: 123,

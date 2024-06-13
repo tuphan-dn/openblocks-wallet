@@ -1,5 +1,6 @@
 import type { PlasmoCSConfig } from 'plasmo'
 import { sendToBackgroundViaRelay } from '@plasmohq/messaging'
+import type { PingRequest, PingResponse } from '~background/messages/ping'
 
 export const config: PlasmoCSConfig = {
   world: 'MAIN',
@@ -7,10 +8,10 @@ export const config: PlasmoCSConfig = {
 }
 
 window.addEventListener('load', () => {
-  console.log('content script loaded')
+  console.log('👍 Openblocks Wallet is injected')
   window.openblocks = {
     ping: async function () {
-      const resp = await sendToBackgroundViaRelay({
+      const resp = await sendToBackgroundViaRelay<PingRequest, PingResponse>({
         name: 'ping',
         body: {
           id: 123,
