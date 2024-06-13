@@ -1,17 +1,30 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
+import { sendToBackground } from '@plasmohq/messaging'
+import dayjs from 'dayjs'
 
 import '~styles/global.scss'
 
 function IndexPopup() {
-  const [data, setData] = useState('')
+  const [date, setDate] = useState(Date.now())
+
+  const onPing = useCallback(async () => {
+    const { message }: { message: number } = await sendToBackground({
+      name: 'ping',
+      body: {
+        id: 123,
+      },
+    })
+    setDate(message)
+  }, [])
 
   return (
-    <div className="w-64 h-64 flex flex-col p-4">
-      <h1>
-        Welcome to your <a href="https://www.plasmo.com">Plasmo</a> Extension!
-      </h1>
-      <input onChange={(e) => setData(e.target.value)} value={data} />
-      <footer>Crafted by @PlasmoHQ</footer>
+    <div className="w-[360px] h-[600px] bg-base-300/10 flex flex-col p-4 gap-4">
+      <button className="btn btn-primary" onClick={onPing}>
+        Ping
+      </button>
+      <p className="w-full opacity-60">
+        {dayjs(date).format('HH:mm:ss, DD/MM/YYYY')}
+      </p>
     </div>
   )
 }
