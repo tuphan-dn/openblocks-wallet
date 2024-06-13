@@ -1,15 +1,12 @@
-import { useState } from "react"
+import { useState } from 'react'
+
+import '~styles/global.scss'
 
 function IndexPopup() {
-  const [data, setData] = useState("")
+  const [data, setData] = useState('')
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        padding: 16
-      }}>
+    <div className="w-64 h-64 flex flex-col p-4">
       <h1>
         Welcome to your <a href="https://www.plasmo.com">Plasmo</a> Extension!
       </h1>
