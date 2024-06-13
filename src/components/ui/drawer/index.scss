@@ -1,0 +1,96 @@
+.rc-drawer {
+  @apply inset-0 z-50 fixed pointer-events-none;
+}
+.rc-drawer-inline {
+  @apply absolute;
+}
+.rc-drawer-mask {
+  @apply inset-0 absolute z-50 bg-black/75 pointer-events-auto;
+}
+.rc-drawer-content-wrapper {
+  @apply absolute z-50 overflow-hidden transition-all duration-300;
+}
+.rc-drawer-content-wrapper-hidden {
+  @apply hidden;
+}
+.rc-drawer-left .rc-drawer-content-wrapper {
+  @apply top-0 bottom-0 left-0;
+}
+.rc-drawer-right .rc-drawer-content-wrapper {
+  @apply top-0 right-0 bottom-0;
+}
+.rc-drawer-content {
+  @apply w-full h-full overflow-auto bg-base-100 pointer-events-auto;
+}
+
+.mask-motion {
+  &-enter,
+  &-appear,
+  &-leave {
+    &-active {
+      @apply transition-all duration-300;
+    }
+  }
+
+  &-enter,
+  &-appear {
+    @apply opacity-0;
+    &-active {
+      @apply opacity-100;
+    }
+  }
+
+  &-leave {
+    @apply opacity-100;
+    &-active {
+      @apply opacity-0;
+    }
+  }
+}
+
+.panel-motion {
+  &-enter,
+  &-appear,
+  &-leave {
+    &-start {
+      @apply transition-none;
+    }
+    &-active {
+      @apply transition-all duration-300;
+    }
+  }
+
+  &-left {
+    &-enter,
+    &-appear {
+      @apply -translate-x-full;
+      &-active {
+        @apply translate-x-0;
+      }
+    }
+
+    &-leave {
+      @apply translate-x-0;
+      &-active {
+        @apply -translate-x-full;
+      }
+    }
+  }
+
+  &-right {
+    &-enter,
+    &-appear {
+      @apply translate-x-full;
+      &-active {
+        @apply translate-x-0;
+      }
+    }
+
+    &-leave {
+      @apply translate-x-0;
+      &-active {
+        @apply translate-x-full;
+      }
+    }
+  }
+}
