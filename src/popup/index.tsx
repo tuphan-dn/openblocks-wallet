@@ -20,12 +20,15 @@ function IndexPopup() {
   }, [])
 
   return (
-    <div className="w-[360px] h-[600px] bg-base-300/10 flex flex-col p-4 gap-4">
+    <div className="w-full h-full bg-base-300/10 flex flex-col p-4 gap-4">
       <button className="btn btn-primary" onClick={onPing}>
         Ping
       </button>
       <p className="w-full opacity-60">
         {dayjs(date).format('HH:mm:ss, DD/MM/YYYY')}
+      </p>
+      <p>
+        Fonttest: Whereas disregard and contempt for human rights have resulted
       </p>
     </div>
   )

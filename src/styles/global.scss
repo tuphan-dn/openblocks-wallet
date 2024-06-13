@@ -6,6 +6,10 @@
 @import './typography.scss';
 @import './animate.scss';
 
+#__plasmo {
+  @apply w-full h-full;
+}
+
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
