@@ -7,7 +7,7 @@ export const config: PlasmoCSConfig = {
   matches: ['http://localhost/*', 'https://*/*'],
 }
 
-window.openblocks = Object.assign({}, window.openblocks, {
+window.openblocks = Object.assign(window.openblocks || {}, {
   sign: async function () {
     const re = await sendToBackgroundViaRelay<SignRequest, SignResponse>({
       name: 'sign',

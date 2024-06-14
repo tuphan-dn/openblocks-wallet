@@ -26,26 +26,33 @@ export const openWindow = async (url: string): Promise<number | undefined> => {
   })
 }
 
-export const sendMessageToExtPage = async <T, S>(
+export const sendMessageToTunnel = async <T, S>(
   tabId: number,
   body: T,
-): Promise<S | string> => {
-  return new Promise((resolve) => {
-    chrome.tabs.sendMessage(tabId, body, {}, resolve)
+): Promise<S> => {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.sendMessage(tabId, body, {}, (re) => {
+      if (typeof re === 'string') reject(re)
+      else resolve(re)
+    })
   })
 }
 
 export const useTunnel = <T, S>() => {
   const [tunnel, setTunnel] = useState<{
     body: T
-    send: (args: S) => void
+    send: (args: S | string) => void
   }>()
 
   useEffect(() => {
     // The handler is really strict
     // It MUST NOT an async function
     // It MUST return true
-    const handler = (body, _sender, send) => {
+    const handler = (
+      body: T,
+      _sender: chrome.runtime.MessageSender,
+      send: (args: S | string) => void,
+    ) => {
       setTunnel({ body, send })
       return true
     }
