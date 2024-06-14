@@ -16,16 +16,17 @@ export default function Popup() {
   const tunnel = useTunnel<SignRequest, SignResponse>()
 
   const onPing = useCallback(async () => {
-    const { message } = await sendToBackground<PingRequest, PingResponse>({
+    const data = await sendToBackground<PingRequest, PingResponse>({
       name: 'ping',
       body: {
         id: v4(),
       },
     })
-    pushMessage(
+    if (typeof data === 'string') return pushMessage('alert-error', data)
+    return pushMessage(
       'alert-success',
-      'phansontu phansontu phansontu phansontu phansontu ' +
-        dayjs(message).format('HH:mm:ss, DD/MM/YYYY'),
+      'phan son tu phan son tu phan son tu phan son tu phan son tu ' +
+        dayjs(data.ts).format('HH:mm:ss, DD/MM/YYYY'),
     )
   }, [pushMessage])
 

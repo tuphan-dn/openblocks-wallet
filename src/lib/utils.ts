@@ -1,4 +1,5 @@
 import numbro from 'numbro'
+import { fromError, isZodErrorLike } from 'zod-validation-error'
 
 /**
  * Delay by async/await
@@ -27,6 +28,7 @@ export const numeric = (
  * @returns The error string
  */
 export function diagnosisError(er: any): string {
+  if (isZodErrorLike(er)) return fromError(er).toString()
   if (er?.response?.data) return er.response.data.toString() // Axios
   if (er?.message) return er.message.toString() // Error
   return er.toString()

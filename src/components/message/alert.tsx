@@ -28,7 +28,7 @@ export default function Alert({
   return (
     <div
       className={clsx(
-        'cursor-pointer alert shadow-xl !w-[calc(100%-1rem)]',
+        'cursor-pointer alert flex flex-row gap-2 shadow-xl !w-[calc(100%-1rem)]',
         type,
       )}
       onClick={() => onClick()}
@@ -37,12 +37,12 @@ export default function Alert({
     >
       <p className="whitespace-normal">{message}</p>
       <div
-        className="radial-progress cursor-pointer absolute top-2 right-2"
+        className="radial-progress cursor-pointer shrink-0"
         style={
           {
             '--value': counter,
-            '--size': '1rem',
-            '--thickness': ttl >= 0 ? '1px' : '0px',
+            '--size': '1.5rem',
+            '--thickness': ttl >= 0 ? '2px' : '0px',
           } as CSSProperties
         }
         onClick={(e) => {
@@ -50,7 +50,7 @@ export default function Alert({
           return unregister(id)
         }}
       >
-        <X className="w-3 h-3" />
+        <X className="w-4 h-4" />
       </div>
     </div>
   )

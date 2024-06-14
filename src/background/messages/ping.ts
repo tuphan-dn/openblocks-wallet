@@ -1,24 +1,32 @@
 import type { PlasmoMessaging } from '@plasmohq/messaging'
+import { z } from 'zod'
+import { diagnosisError } from '~lib/utils'
 
-export type PingRequest = {
-  id: string
-}
+export const PingRequestDto = z.object({
+  id: z.string(),
+})
 
-export type PingResponse = {
-  id: string
-  message: number
-}
+export type PingRequest = z.infer<typeof PingRequestDto>
 
+export const PingResponseDto = z.union([
+  z.string(),
+  z.object({
+    id: z.string(),
+    ts: z.number(),
+  }),
+])
+
+export type PingResponse = z.infer<typeof PingResponseDto>
 const handler: PlasmoMessaging.MessageHandler<
   PingRequest,
   PingResponse
 > = async (req, res) => {
-  const message = Date.now()
-
-  res.send({
-    id: req.body.id,
-    message,
-  })
+  try {
+    const body = PingRequestDto.parse(req.body)
+    return res.send({ id: body.id, ts: Date.now() })
+  } catch (er) {
+    return res.send(diagnosisError(er))
+  }
 }
 
 export default handler

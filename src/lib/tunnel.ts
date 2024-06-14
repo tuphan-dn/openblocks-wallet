@@ -26,7 +26,7 @@ export const openWindow = async (url: string): Promise<number | undefined> => {
   })
 }
 
-export const sendMessageWindow = async <T, S>(
+export const sendMessageToExtPage = async <T, S>(
   tabId: number,
   body: T,
 ): Promise<S | string> => {
