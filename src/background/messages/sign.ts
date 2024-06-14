@@ -13,13 +13,10 @@ export const SignResponseDto = z.object({
 })
 export type SignResponse = z.infer<typeof SignResponseDto>
 
-const handler = factory(SignRequestDto, SignResponseDto, async (req) => {
+const handler = factory(SignRequestDto, SignResponseDto, async ({ body }) => {
   const id = await openWindow('/popup.html')
   if (!id) throw new Error('Cannot open the wallet')
-  const data = await sendMessageToTunnel<SignRequest, SignResponse>(
-    id,
-    req.body,
-  )
+  const data = await sendMessageToTunnel<SignRequest, SignResponse>(id, body)
   if (!data) throw new Error('User has rejected the request')
   return data
 })
