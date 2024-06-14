@@ -8,7 +8,7 @@ export const config: PlasmoCSConfig = {
   matches: ['http://localhost/*', 'https://*/*'],
 }
 
-window.openblocks = Object.assign({}, window.openblocks, {
+window.openblocks = Object.assign(window.openblocks || {}, {
   ping: async function () {
     const re = await sendToBackgroundViaRelay<PingRequest, PingResponse>({
       name: 'ping',
