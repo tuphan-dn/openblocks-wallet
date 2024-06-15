@@ -28,7 +28,7 @@ export default function ThemeSwitch() {
       <PopoverPanel
         as="ul"
         anchor={{ to: 'left', gap: 5 }}
-        className="z-10 menu menu-sm p-2 border-2 border-base-200/20 bg-base-100/20 backdrop-blur rounded-box w-48 shadow-lg animate-pop-in"
+        className="z-10 menu menu-sm p-2 bg-base-100/50 backdrop-blur rounded-box w-48 shadow-lg animate-pop-in"
       >
         <li>
           <button
