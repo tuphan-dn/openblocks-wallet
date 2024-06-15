@@ -6,11 +6,7 @@ export function uuid() {
   return Math.round(Math.random() * 10 ** 9).toString()
 }
 
-export type MessageType =
-  | 'alert-info'
-  | 'alert-success'
-  | 'alert-warning'
-  | 'alert-error'
+export type MessageType = 'info' | 'success' | 'warning' | 'error'
 
 export type MessageProps = {
   id: string
