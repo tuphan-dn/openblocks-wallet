@@ -28,11 +28,11 @@ export default function ThemeSwitch() {
       <PopoverPanel
         as="ul"
         anchor={{ to: 'left', gap: 5 }}
-        className="z-10 menu menu-sm p-2 border-2 border-base-200 bg-base-100 rounded-box w-48 shadow-lg animate-pop-in"
+        className="z-10 menu menu-sm p-2 border-2 border-base-200/20 bg-base-100/20 backdrop-blur rounded-box w-48 shadow-lg animate-pop-in"
       >
         <li>
           <button
-            className={clsx({ active: theme === 'system' })}
+            className={clsx({ '!bg-base-content/20': theme === 'system' })}
             onClick={() => setTheme('system')}
           >
             <Monitor className="w-3 h-3" />
@@ -41,7 +41,7 @@ export default function ThemeSwitch() {
         </li>
         <li>
           <button
-            className={clsx({ active: theme === 'light' })}
+            className={clsx({ '!bg-base-content/20': theme === 'light' })}
             onClick={() => setTheme('light')}
           >
             <Sun className="w-3 h-3" />
@@ -50,7 +50,7 @@ export default function ThemeSwitch() {
         </li>
         <li>
           <button
-            className={clsx({ active: theme === 'dark' })}
+            className={clsx({ '!bg-base-content/20': theme === 'dark' })}
             onClick={() => setTheme('dark')}
           >
             <Moon className="w-3 h-3" />
