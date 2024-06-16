@@ -1,4 +1,4 @@
-import { type CSSProperties, useState } from 'react'
+import { type CSSProperties, useState, useMemo } from 'react'
 import { useInterval } from 'react-use'
 import clsx from 'clsx'
 
@@ -25,17 +25,30 @@ export default function Alert({
     hover ? null : Math.round(ttl / 100),
   )
 
+  const alert = useMemo(() => {
+    switch (type) {
+      case 'info':
+        return 'bg-info text-info-content'
+      case 'success':
+        return 'bg-success text-success-content'
+      case 'warning':
+        return 'bg-warning text-warning-content'
+      case 'error':
+        return 'bg-error text-error-content'
+    }
+  }, [type])
+
   return (
     <div
       className={clsx(
-        'cursor-pointer alert flex flex-row gap-2 shadow-xl !w-[calc(100%-1rem)]',
-        type,
+        'cursor-pointer flex flex-row items-center gap-2 shadow-lg !w-[calc(100%-1rem)] rounded-box p-4 backdrop-blur',
+        alert,
       )}
       onClick={() => onClick()}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <p className="whitespace-normal">{message}</p>
+      <p className="text-xs whitespace-normal">{message}</p>
       <div
         className="radial-progress cursor-pointer shrink-0"
         style={

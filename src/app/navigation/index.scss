@@ -1,0 +1,13 @@
+.navlink {
+  .navlink-indicator {
+    @apply opacity-0;
+  }
+
+  &.active {
+    @apply text-primary;
+
+    .navlink-indicator {
+      @apply opacity-100;
+    }
+  }
+}
