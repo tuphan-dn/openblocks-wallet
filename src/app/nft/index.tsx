@@ -1,7 +1,7 @@
-export default function Token() {
+export default function Nft() {
   return (
     <div className="w-full p-4">
-      <p>Token</p>
+      <p>Nft</p>
     </div>
   )
 }

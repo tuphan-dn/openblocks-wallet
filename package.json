@@ -22,6 +22,7 @@
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.11",
+    "framer-motion": "^11.2.10",
     "immer": "^10.1.1",
     "lucide-react": "^0.394.0",
     "next-themes": "^0.3.0",

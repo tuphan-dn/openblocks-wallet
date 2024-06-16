@@ -4,6 +4,7 @@ import Layout from '~app/layout'
 import Error from '~app/error'
 import Main from '~app/main'
 import Token from '~app/token'
+import Nft from '~app/nft'
 
 const router = createMemoryRouter([
   {
@@ -18,6 +19,10 @@ const router = createMemoryRouter([
       {
         path: '/token',
         element: <Token />,
+      },
+      {
+        path: '/nft',
+        element: <Nft />,
       },
     ],
   },
