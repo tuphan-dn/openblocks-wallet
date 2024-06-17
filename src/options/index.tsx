@@ -1,11 +1,9 @@
 import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 import { SecureStorage } from '@plasmohq/storage/secure'
 
-import Layout from './layout'
 import Error from './error'
-import Main from './main'
-import Token from './token'
-import Nft from './nft'
+import Layout from './layout'
+import Signin from './signin'
 
 const router = createMemoryRouter([
   {
@@ -15,26 +13,18 @@ const router = createMemoryRouter([
     loader: async () => {
       const storage = new SecureStorage()
       const jwt = await storage.get('jwt')
-      if (!jwt) window.location.href = '/options.html'
+      if (jwt) window.location.href = '/popup.html'
       return { jwt }
     },
     children: [
       {
         index: true,
-        element: <Main />,
-      },
-      {
-        path: '/token',
-        element: <Token />,
-      },
-      {
-        path: '/nft',
-        element: <Nft />,
+        element: <Signin />,
       },
     ],
   },
 ])
 
-export default function Popup() {
+export default function Options() {
   return <RouterProvider router={router} />
 }
