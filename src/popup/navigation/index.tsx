@@ -1,18 +1,35 @@
+import { NavLink } from 'react-router-dom'
+
 import Link from './link'
+import clsx from 'clsx'
 
 export default function Navigation() {
   return (
     <div className="w-full bg-base-content/20 backdrop-blur px-4 grid grid-cols-4 rounded-t-box">
-      <Link to="/" className="col-span-1">
+      <Link
+        as={NavLink}
+        className={({ isActive }) => clsx('col-span-1', { active: isActive })}
+        to="/"
+      >
         Logo
       </Link>
-      <Link to="/token" className="col-span-1">
+      <Link
+        as={NavLink}
+        to="/token"
+        className={({ isActive }) => clsx('col-span-1', { active: isActive })}
+      >
         Token
       </Link>
-      <Link to="/nft" className="col-span-1">
+      <Link
+        as={NavLink}
+        to="/nft"
+        className={({ isActive }) => clsx('col-span-1', { active: isActive })}
+      >
         NFT
       </Link>
-      <button className="col-span-1 font-bold">Settings</button>
+      <Link as="button" className="col-span-1">
+        Settings
+      </Link>
     </div>
   )
 }
