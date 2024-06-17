@@ -1,11 +1,13 @@
-import { createMemoryRouter, RouterProvider } from 'react-router-dom'
-import { SecureStorage } from '@plasmohq/storage/secure'
+import { createMemoryRouter, redirect, RouterProvider } from 'react-router-dom'
 
 import Layout from './layout'
 import Error from './error'
-import Main from './main'
+import Page from './page'
 import Token from './token'
 import Nft from './nft'
+
+import { getSession } from '~lib/supabase'
+import Signin from './signin'
 
 const router = createMemoryRouter([
   {
@@ -13,15 +15,14 @@ const router = createMemoryRouter([
     element: <Layout />,
     errorElement: <Error />,
     loader: async () => {
-      const storage = new SecureStorage()
-      const jwt = await storage.get('jwt')
-      if (!jwt) window.location.href = '/options.html'
-      return { jwt }
+      const session = await getSession()
+      if (!session) return redirect('/signin')
+      return { session }
     },
     children: [
       {
         index: true,
-        element: <Main />,
+        element: <Page />,
       },
       {
         path: '/token',
@@ -32,6 +33,16 @@ const router = createMemoryRouter([
         element: <Nft />,
       },
     ],
+  },
+  {
+    path: '/signin',
+    element: <Signin />,
+    errorElement: <Error />,
+    loader: async () => {
+      const session = await getSession()
+      if (session) return redirect('/')
+      return { session }
+    },
   },
 ])
 

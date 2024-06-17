@@ -12,7 +12,7 @@ export default function Navigation() {
       <Link to="/nft" className="col-span-1">
         NFT
       </Link>
-      <button className="col-span-1">Settings</button>
+      <button className="col-span-1 font-bold">Settings</button>
     </div>
   )
 }

@@ -5,32 +5,30 @@ import clsx from 'clsx'
 
 import { SiGithub } from '@icons-pack/react-simple-icons'
 
-import { supabase } from '~lib/supabase'
+import { getSession, supabase } from '~lib/supabase'
 
 export default function Signin() {
   const [submitting, setSubmitting] = useState(false)
 
   const { value, loading: pending } = useAsync(async () => {
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.getSession()
-    console.log('shit', error)
-    if (error) return null
+    const session = await getSession()
     return session
   }, [])
 
-  console.log(value)
-
   const onSignin = useCallback(async (provider: Provider, scopes = 'email') => {
     setSubmitting(true)
-    await supabase.auth.signInWithOAuth({
+    const {
+      data: { url },
+    } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
         scopes,
         redirectTo: location.href,
+        skipBrowserRedirect: true,
       },
     })
+    if (url) window.open(url)
+    else setSubmitting(false)
   }, [])
 
   const onSignout = useCallback(async () => {
