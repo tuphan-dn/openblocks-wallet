@@ -21,7 +21,7 @@ export default function Page() {
 
   return (
     <div className="w-full h-full flex flex-col gap-4 p-4">
-      <button className="btn" onClick={onSignout}>
+      <button className="btn btn-secondary" onClick={onSignout}>
         Sign out
       </button>
       <button className="btn btn-primary" onClick={onApprove}>

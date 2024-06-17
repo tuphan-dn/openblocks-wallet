@@ -23,18 +23,20 @@ export default function Page() {
       provider,
       options: {
         scopes,
-        redirectTo: location.href,
+        redirectTo: location.href.replace(/(#+)$/g, ''),
         skipBrowserRedirect: true,
       },
     })
-    if (url) window.open(url)
-    else setSubmitting(false)
+    if (url) {
+      window.open(url)
+      window.close()
+    } else setSubmitting(false)
   }, [])
 
   const onSignout = useCallback(async () => {
     setSubmitting(true)
     await supabase.auth.signOut()
-    window.location.reload()
+    location.reload()
   }, [])
 
   const loading = useMemo(() => submitting || pending, [submitting, pending])

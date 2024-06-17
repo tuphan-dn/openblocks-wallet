@@ -16,17 +16,17 @@
 }
 
 html {
-  @apply w-full h-full no-scrollbar bg-bottom bg-no-repeat bg-cover bg-[url('../../assets/bg.webp')];
+  @apply w-full no-scrollbar bg-bottom bg-no-repeat bg-cover bg-[url('../../assets/bg.webp')];
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
 }
 
 body {
-  @apply w-full h-full flex flex-row justify-center bg-base-300/30 dark:bg-base-300/70;
+  @apply w-full flex flex-row justify-center bg-base-300/30 dark:bg-base-300/70;
 }
 
 #__plasmo {
-  @apply w-[360px] h-full min-h-[600px];
+  @apply w-[360px] min-h-[max(100dvh,600px)];
 }
 
 input[type='number']::-webkit-inner-spin-button,
