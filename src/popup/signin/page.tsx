@@ -7,7 +7,7 @@ import { SiGithub } from '@icons-pack/react-simple-icons'
 
 import { getSession, supabase } from '~lib/supabase'
 
-export default function Signin() {
+export default function Page() {
   const [submitting, setSubmitting] = useState(false)
 
   const { value, loading: pending } = useAsync(async () => {
