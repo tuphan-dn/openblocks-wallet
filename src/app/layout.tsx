@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom'
 
 import UiProvider from '~providers/ui.provider'
-
 import Navigation from './navigation'
 
 export default function Layout() {
