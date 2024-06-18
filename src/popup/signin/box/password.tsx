@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useAsync } from 'react-use'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
@@ -7,6 +7,7 @@ import { ArrowRight, Eye, EyeOff } from 'lucide-react'
 
 import { getSession, signOut } from '~lib/auth'
 import Password from '~lib/password'
+import { useTheme } from 'next-themes'
 
 const palette = [
   '#ff918f',
@@ -68,8 +69,13 @@ export default function PasswordBox() {
   const [loading, setLoading] = useState(false)
   const [hidden, setHidden] = useState(true)
   const [pwd, setPwd] = useState('')
+  const { resolvedTheme } = useTheme()
 
   const { value: session } = useAsync(getSession)
+  const base = useMemo(
+    () => (resolvedTheme === 'dark' ? '#ffffff22' : '#00000022'),
+    [resolvedTheme],
+  )
 
   const onSignOut = useCallback(async () => {
     setLoading(true)
@@ -103,7 +109,7 @@ export default function PasswordBox() {
             key={bg}
             className="w-[2px] h-2 rounded"
             animate={{
-              backgroundColor: passwordStrength(pwd) > i ? bg : '#f2f2f2',
+              backgroundColor: passwordStrength(pwd) > i ? bg : base,
             }}
           />
         ))}
