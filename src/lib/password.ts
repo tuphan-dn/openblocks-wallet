@@ -34,6 +34,10 @@ export const set = async (prev: string, next: string) => {
   return await storage.set(HASH, hash(next))
 }
 
+export const unset = async () => {
+  return await storage.remove(HASH)
+}
+
 export const unlock = async (pwd: string) => {
   const placeholder = await storage.get(HASH)
   if (!placeholder) throw new Error('No password profile')
