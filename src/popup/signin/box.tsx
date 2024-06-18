@@ -113,7 +113,10 @@ export function PasswordBox() {
           className="grow"
           value={pwd}
           onChange={(e) => setPwd(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && ref?.focus()}
+          onKeyDown={(e) => {
+            e.preventDefault()
+            if (e.key === 'Enter' || e.key === 'Tab') ref?.focus()
+          }}
           autoFocus
         />
         <label className="swap">
