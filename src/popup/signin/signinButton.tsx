@@ -53,7 +53,7 @@ export function LiteButton({
       onClick={onClick}
       disabled={loading || disabled}
     >
-      <Icon className="w-4 h-4" />
+      <Icon className={clsx('w-4 h-4', { hidden: loading })} />
       <span
         className={clsx('loading loading-spinner loading-sm', {
           hidden: !loading,

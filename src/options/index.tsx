@@ -4,7 +4,7 @@ import Error from './error'
 import Layout from './layout'
 import Page from './page'
 
-import { getSession } from '~lib/supabase'
+import { getSession } from '~lib/auth'
 
 const router = createMemoryRouter([
   {

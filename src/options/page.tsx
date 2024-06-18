@@ -5,7 +5,8 @@ import clsx from 'clsx'
 
 import { SiGithub } from '@icons-pack/react-simple-icons'
 
-import { getSession, supabase } from '~lib/supabase'
+import { supabase } from '~lib/supabase'
+import { getSession } from '~lib/auth'
 
 export default function Signin() {
   const [submitting, setSubmitting] = useState(false)

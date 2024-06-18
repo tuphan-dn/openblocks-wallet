@@ -5,14 +5,16 @@ import Page from './page'
 import Token from './token'
 import Nft from './nft'
 
-import { getSession } from '~lib/supabase'
+import { getSession } from '~lib/auth'
+import { isInitialized } from '~lib/password'
 
 const App: RouteObject = {
   path: 'app',
   element: <Layout />,
   loader: async () => {
     const session = await getSession()
-    if (!session) return redirect('/signin')
+    const initialized = await isInitialized()
+    if (!session || !initialized) return redirect('/signin')
     return { session }
   },
   children: [

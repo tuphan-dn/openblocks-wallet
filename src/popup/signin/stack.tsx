@@ -8,20 +8,20 @@ export type Card = {
 
 export type StackProps = {
   items: Card[]
-  orders: string[]
+  layout: string[]
   offset?: number
   scale?: number
 }
 
 export default function Stack({
   items,
-  orders,
+  layout,
   offset = 6,
   scale = 0.025,
 }: StackProps) {
   return (
     <div className="relative h-64 w-full">
-      {orders
+      {layout
         .map((order) => items.find(({ id }) => id === order))
         .filter((e): e is Card => !!e)
         .map(({ id, children }, i) => (
@@ -34,21 +34,26 @@ export default function Stack({
               zIndex: items.length - i,
             }}
           >
-            {children}
+            <motion.div
+              className="w-full h-full"
+              animate={{ opacity: !i ? 1 : 0.2 }}
+            >
+              {children}
+            </motion.div>
           </motion.div>
         ))}
     </div>
   )
 }
 
-export function next(orders: string[]) {
-  const items = [...orders]
+export function next<T>(layout: Array<T>): Array<T> {
+  const items = [...layout]
   items.unshift(items.pop()!)
   return items
 }
 
-export function prev(orders: string[]) {
-  const items = [...orders]
-  items.push(orders.shift()!)
+export function prev<T>(layout: Array<T>): Array<T> {
+  const items = [...layout]
+  items.push(layout.shift()!)
   return items
 }

@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react'
 import type { Provider } from '@supabase/supabase-js'
+import { z } from 'zod'
+import clsx from 'clsx'
 
 import {
   SiApple,
@@ -8,14 +10,19 @@ import {
   SiX,
 } from '@icons-pack/react-simple-icons'
 import { Ellipsis } from 'lucide-react'
-import Stack, { next, prev } from './stack'
+import Stack from './stack'
 import { FullButton, LiteButton } from './signinButton'
 
 import { supabase } from '~lib/supabase'
+import { useSafeRouteLoaderData } from '~lib/hooks/useLoader'
+import { signOut } from '~lib/auth'
 
 export default function Page() {
   const [loading, setLoading] = useState(false)
-  const [orders, setOrders] = useState(['green', 'blue'])
+  const { layout } = useSafeRouteLoaderData(
+    'signin',
+    z.object({ layout: z.array(z.enum(['social', 'password'])) }),
+  )
 
   const onSignin = useCallback(async (provider: Provider, scopes = 'email') => {
     setLoading(true)
@@ -35,13 +42,19 @@ export default function Page() {
     } else setLoading(false)
   }, [])
 
+  const onSignOut = useCallback(async () => {
+    setLoading(true)
+    await signOut()
+    setLoading(false)
+  }, [])
+
   return (
     <div className="w-full h-full flex flex-col gap-4 p-4">
       <div className="grow bg-primary/50 w-full rounded-box"></div>
       <Stack
         items={[
           {
-            id: 'green',
+            id: 'social',
             children: (
               <div className="w-full h-full flex flex-col gap-2 rounded-box">
                 <div className="w-full grow p-2">
@@ -81,26 +94,26 @@ export default function Page() {
             ),
           },
           {
-            id: 'blue',
+            id: 'password',
             children: (
               <div className="w-full grid grid-cols-4 gap-2 rounded-box">
                 <button
-                  className="col-span-2 btn"
-                  onClick={() => setOrders(prev(orders))}
+                  className="col-span-2 btn btn-secondary"
+                  onClick={onSignOut}
+                  disabled={loading}
                 >
-                  Prev
-                </button>
-                <button
-                  className="col-span-2 btn"
-                  onClick={() => setOrders(next(orders))}
-                >
-                  Next
+                  Cancel
+                  <span
+                    className={clsx('loading loading-spinner loading-sm', {
+                      hidden: !loading,
+                    })}
+                  />
                 </button>
               </div>
             ),
           },
         ]}
-        orders={orders}
+        layout={layout}
       />
     </div>
   )

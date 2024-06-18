@@ -4,15 +4,10 @@ import ThemeSwitch from '~components/themeSwitch'
 
 import type { SignRequest, SignResponse } from '~background/messages/sign'
 import { useTunnel } from '~lib/tunnel'
-import { supabase } from '~lib/supabase'
+import { signOut } from '~lib/auth'
 
 export default function Page() {
   const tunnel = useTunnel<SignRequest, SignResponse>()
-
-  const onSignout = useCallback(async () => {
-    await supabase.auth.signOut()
-    window.location.reload()
-  }, [])
 
   const onApprove = useCallback(() => {
     tunnel?.send({ sig: 'sig', addr: '0xabd' })
@@ -21,7 +16,7 @@ export default function Page() {
 
   return (
     <div className="w-full h-full flex flex-col gap-4 p-4">
-      <button className="btn btn-secondary" onClick={onSignout}>
+      <button className="btn btn-secondary" onClick={signOut}>
         Sign out
       </button>
       <button className="btn btn-primary" onClick={onApprove}>
