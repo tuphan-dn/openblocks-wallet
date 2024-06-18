@@ -21,7 +21,7 @@ export default function ThemeSwitch() {
 
   return (
     <Popover className="relative">
-      <PopoverButton className="btn btn-circle bg-base-content/20 hover:bg-base-content/40 !border-none !outline-none backdrop-blur">
+      <PopoverButton className="btn btn-circle bg-base-content/20 hover:bg-base-content/40 !border-none !outline-none backdrop-blur shadow-outer">
         <Icon className="w-4 h-4" />
       </PopoverButton>
       <PopoverPanel

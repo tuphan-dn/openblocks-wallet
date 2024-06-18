@@ -17,12 +17,12 @@
 
 html {
   @apply w-full no-scrollbar bg-bottom bg-no-repeat bg-cover bg-[url('../../assets/bg.webp')];
-  font-family: 'Open Sans', sans-serif;
   font-size: 16px;
 }
 
 body {
   @apply w-full flex flex-row justify-center bg-base-300/30 dark:bg-base-300/70;
+  font-family: 'Open Sans', sans-serif;
 }
 
 #__plasmo {
