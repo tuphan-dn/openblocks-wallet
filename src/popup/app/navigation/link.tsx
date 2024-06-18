@@ -16,7 +16,7 @@ export default function Link<T extends ElementType>({
   return (
     <As
       className={clsx(
-        'navlink relative px-2 py-4 font-black text-center tracking-wider transition-all text-base-content hover:text-primary',
+        'navlink relative px-2 py-4 font-clash font-bold text-center tracking-widest transition-all text-base-content hover:text-primary',
         className,
       )}
       onMouseEnter={() => setHover(true)}
