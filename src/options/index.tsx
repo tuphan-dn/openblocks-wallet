@@ -1,27 +1,30 @@
 import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 
-import Layout from './layout'
 import Error from './error'
+import Layout from './layout'
 import Page from './page'
-import App from './app'
-import Signin from './signin'
+
+import { getSession } from '~lib/auth'
 
 const router = createMemoryRouter([
   {
     path: '/',
     element: <Layout />,
     errorElement: <Error />,
+    loader: async () => {
+      const session = await getSession()
+      if (session) location.assign('/popup.html')
+      return {}
+    },
     children: [
       {
         index: true,
         element: <Page />,
       },
-      App,
-      Signin,
     ],
   },
 ])
 
-export default function Popup() {
+export default function Options() {
   return <RouterProvider router={router} />
 }

@@ -2,8 +2,6 @@ import { Outlet } from 'react-router-dom'
 
 import UiProvider from '~providers/ui.provider'
 
-import Navigation from './navigation'
-
 export default function Layout() {
   return (
     <UiProvider>
@@ -12,9 +10,6 @@ export default function Layout() {
           <div className="col-span-full min-h-full">
             <Outlet />
           </div>
-        </div>
-        <div className="w-full sticky bottom-0 left-0">
-          <Navigation />
         </div>
       </div>
     </UiProvider>

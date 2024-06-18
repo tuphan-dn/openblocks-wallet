@@ -14,14 +14,17 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.0.4",
+    "@icons-pack/react-simple-icons": "^9.5.0",
+    "@noble/hashes": "^1.4.0",
     "@plasmohq/messaging": "^0.6.2",
-    "@types/chrome": "^0.0.268",
-    "@types/node": "^20.14.2",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
+    "@plasmohq/storage": "^1.10.0",
+    "@supabase/supabase-js": "^2.43.5",
     "axios": "^1.7.2",
+    "bs58": "^5.0.0",
     "clsx": "^2.1.1",
+    "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.11",
+    "dotenv": "^16.4.5",
     "framer-motion": "^11.2.10",
     "immer": "^10.1.1",
     "lucide-react": "^0.394.0",
@@ -34,13 +37,18 @@
     "react-router-dom": "^6.23.1",
     "react-use": "^17.5.0",
     "swr": "^2.2.5",
-    "typescript": "^5.4.5",
     "uuid": "^10.0.0",
     "zod": "^3.23.8",
     "zod-validation-error": "^3.3.0",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@parcel/optimizer-data-url": "2.9.3",
+    "@parcel/transformer-inline-string": "2.9.3",
+    "@types/chrome": "^0.0.268",
+    "@types/node": "^20.14.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "autoprefixer": "^10.4.19",
@@ -53,14 +61,29 @@
     "postcss": "^8.4.38",
     "sass": "^1.77.5",
     "tailwindcss": "^3.4.4",
+    "typescript": "^5.4.5",
     "typescript-eslint": "^7.13.0"
   },
   "manifest": {
     "host_permissions": [
       "https://*/*"
     ],
+    "key": "$CRX_KEY",
     "permissions": [
       "tabs"
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": [
+          "options.html"
+        ],
+        "matches": [
+          "<all_urls>"
+        ],
+        "extension_ids": [
+          "$CRX_ID"
+        ]
+      }
     ]
   }
 }

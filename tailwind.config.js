@@ -13,6 +13,13 @@ module.exports = {
       animation: {
         'pop-in': 'pop-in 200ms cubic-bezier(0, 0, 0.2, 1)',
       },
+      boxShadow: {
+        outer:
+          'inset .5px .5px rgba(255, 255, 255, 0.6), 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+      },
+      fontFamily: {
+        clash: '"Clash Display", sans-serif',
+      },
     },
   },
   plugins: [require('daisyui')],
