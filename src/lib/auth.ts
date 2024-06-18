@@ -1,5 +1,5 @@
 import type { Provider } from '@supabase/supabase-js'
-import { unset } from './password'
+import Password from './password'
 import { supabase } from './supabase'
 
 export const getSession = async () => {
@@ -26,7 +26,11 @@ export const signIn = async (provider: Provider, scopes = 'email') => {
 }
 
 export const signOut = async () => {
-  await supabase.auth.signOut()
-  await unset()
-  location.reload()
+  const session = await getSession()
+  if (session) {
+    await supabase.auth.signOut()
+    const password = new Password(session.user.id)
+    await password.set()
+    location.reload()
+  }
 }

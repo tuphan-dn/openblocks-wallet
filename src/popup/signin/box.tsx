@@ -1,5 +1,6 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import type { Provider } from '@supabase/supabase-js'
+import { useNavigate } from 'react-router-dom'
 import { useAsync } from 'react-use'
 import clsx from 'clsx'
 
@@ -13,7 +14,7 @@ import { ArrowRight, Ellipsis, Eye, EyeOff } from 'lucide-react'
 import { FullButton, LiteButton } from './signinButton'
 
 import { getSession, signIn, signOut } from '~lib/auth'
-import { set } from '~lib/password'
+import Password from '~lib/password'
 
 export function SocialBox() {
   const [loading, setLoading] = useState(false)
@@ -28,7 +29,7 @@ export function SocialBox() {
   }, [])
 
   return (
-    <div className="w-full h-full flex flex-col gap-2 rounded-box">
+    <div className="w-full h-full flex flex-col gap-2">
       <div className="w-full grow p-2">
         <p className="opacity-60">
           Signin Openblocks Wallet with your social accounts
@@ -66,12 +67,11 @@ export function SocialBox() {
   )
 }
 
-export function PasswordBox() {
+export function LockBox() {
   const [loading, setLoading] = useState(false)
   const [hidden, setHidden] = useState(true)
-  const [ref, setRef] = useState<HTMLInputElement | null>(null)
   const [pwd, setPwd] = useState('')
-  const [vrf, setVrf] = useState('')
+  const navigate = useNavigate()
 
   const { value: session } = useAsync(getSession)
 
@@ -81,23 +81,18 @@ export function PasswordBox() {
     setLoading(false)
   }, [])
 
-  const ok = useMemo(() => {
-    if (!pwd || !vrf) return false
-    if (pwd !== vrf) return false
-    return true
-  }, [pwd, vrf])
-
-  const onSubmit = useCallback(async () => {
-    if (!ok) return
-    await set(pwd, vrf)
-    location.reload()
-  }, [ok, pwd, vrf])
+  const onUnlock = useCallback(async () => {
+    if (!pwd || !session?.user.id) return
+    const password = new Password(session.user.id)
+    const unlocked = await password.unlock(pwd)
+    if (unlocked) navigate('/app')
+  }, [session?.user.id, pwd, navigate])
 
   return (
-    <div className="w-full h-full flex flex-col gap-2 rounded-box">
+    <div className="w-full h-full flex flex-col gap-2">
       <div className="grow flex flex-col gap-2 items-center">
         <div className="avatar">
-          <div className="w-10 rounded-full ring-2 ring-base-100">
+          <div className="w-20 rounded-full ring-2 ring-base-100">
             <img
               src={session?.user?.user_metadata?.avatar_url}
               alt={session?.user?.email}
@@ -106,21 +101,7 @@ export function PasswordBox() {
         </div>
         <p className="w-full text-center">{session?.user?.email}</p>
       </div>
-      <label className="w-full input !border-none !outline-none bg-base-100 flex flex-row items-center gap-4">
-        <input
-          placeholder="Password"
-          type={hidden ? 'password' : 'text'}
-          className="grow"
-          value={pwd}
-          onChange={(e) => setPwd(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === 'Tab') {
-              e.preventDefault()
-              ref?.focus()
-            }
-          }}
-          autoFocus
-        />
+      <div className="w-full input rounded-box !border-none !outline-none bg-base-100 flex flex-row items-center gap-4">
         <label className="swap">
           <input
             type="checkbox"
@@ -130,25 +111,23 @@ export function PasswordBox() {
           <Eye className="swap-on w-4 h-4" />
           <EyeOff className="swap-off w-4 h-4" />
         </label>
-      </label>
-      <label className="w-full input !border-none !outline-none bg-base-100 flex flex-row items-center gap-2">
         <input
-          placeholder="Confirm password"
+          placeholder="Password"
           type={hidden ? 'password' : 'text'}
           className="grow"
-          value={vrf}
-          onChange={(e) => setVrf(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
-          ref={setRef}
+          value={pwd}
+          onChange={(e) => setPwd(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && onUnlock()}
+          autoFocus
         />
         <button
-          className="btn btn-sm btn-ghost btn-square -mr-2"
-          onClick={onSubmit}
-          disabled={!ok}
+          className="btn btn-sm btn-ghost btn-square -mx-2"
+          onClick={onUnlock}
+          disabled={!pwd}
         >
           <ArrowRight className="w-4 h-4" />
         </button>
-      </label>
+      </div>
       <p
         className="w-full mt-2 text-center opacity-60 cursor-pointer hover:underline flex flex-row gap-2 justify-center items-center"
         onClick={onSignOut}

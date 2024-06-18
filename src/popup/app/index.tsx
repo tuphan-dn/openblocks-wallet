@@ -6,15 +6,18 @@ import Token from './token'
 import Nft from './nft'
 
 import { getSession } from '~lib/auth'
-import { isInitialized } from '~lib/password'
+import Password from '~lib/password'
 
 const App: RouteObject = {
   path: 'app',
   element: <Layout />,
   loader: async () => {
     const session = await getSession()
-    const initialized = await isInitialized()
-    if (!session || !initialized) return redirect('/signin')
+    if (!session) return redirect('/signin')
+    const password = new Password(session.user.id)
+    const initialized = await password.isInitialized()
+    const unlocked = await password.isUnlocked()
+    if (!initialized || !unlocked) return redirect('/signin')
     return { session }
   },
   children: [
