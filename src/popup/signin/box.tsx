@@ -114,8 +114,10 @@ export function PasswordBox() {
           value={pwd}
           onChange={(e) => setPwd(e.target.value)}
           onKeyDown={(e) => {
-            e.preventDefault()
-            if (e.key === 'Enter' || e.key === 'Tab') ref?.focus()
+            if (e.key === 'Enter' || e.key === 'Tab') {
+              e.preventDefault()
+              ref?.focus()
+            }
           }}
           autoFocus
         />
