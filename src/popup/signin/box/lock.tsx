@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAsync } from 'react-use'
 import clsx from 'clsx'
 
-import { ArrowRight, Eye, EyeOff } from 'lucide-react'
+import { ArrowRight, Eye, EyeOff, LogOut } from 'lucide-react'
 
 import { getSession, signOut } from '~lib/auth'
 import Password from '~lib/password'
@@ -40,7 +40,17 @@ export default function LockBox() {
             />
           </div>
         </div>
-        <p className="w-full text-center">{session?.user?.email}</p>
+        <div className="w-full flex flex-row gap-2 justify-center items-center">
+          <p className="text-center">{session?.user?.email}</p>
+          <button className="btn btn-xs btn-circle" onClick={onSignOut}>
+            <LogOut className={clsx('w-3 h-3', { hidden: loading })} />
+            <span
+              className={clsx('loading loading-spinner loading-xs', {
+                hidden: !loading,
+              })}
+            />
+          </button>
+        </div>
       </div>
       <div className="w-full input rounded-box !border-none !outline-none bg-base-100 flex flex-row items-center gap-4">
         <label className="swap">
@@ -49,13 +59,13 @@ export default function LockBox() {
             checked={hidden}
             onChange={(e) => setHidden(e.target.checked)}
           />
-          <Eye className="swap-on w-4 h-4" />
-          <EyeOff className="swap-off w-4 h-4" />
+          <EyeOff className="swap-on w-4 h-4" />
+          <Eye className="swap-off w-4 h-4" />
         </label>
         <input
           placeholder="Password"
           type={hidden ? 'password' : 'text'}
-          className="grow"
+          className="grow text-sm"
           value={pwd}
           onChange={(e) => setPwd(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && onUnlock()}
@@ -69,16 +79,8 @@ export default function LockBox() {
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
-      <p
-        className="w-full mt-2 text-center opacity-60 cursor-pointer hover:underline flex flex-row gap-2 justify-center items-center"
-        onClick={onSignOut}
-      >
-        <span>Use another account</span>
-        <span
-          className={clsx('loading loading-spinner loading-xs', {
-            hidden: !loading,
-          })}
-        />
+      <p className="w-full mt-2 text-center opacity-60 cursor-pointer hover:underline flex flex-row gap-2 justify-center items-center text-xs">
+        Forgot Password
       </p>
     </div>
   )

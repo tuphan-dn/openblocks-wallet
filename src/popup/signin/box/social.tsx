@@ -27,7 +27,7 @@ export default function SocialBox() {
   return (
     <div className="w-full h-full flex flex-col gap-2">
       <div className="w-full grow p-2">
-        <p className="opacity-60">
+        <p className="opacity-60 text-sm">
           Signin Openblocks Wallet with your social accounts
         </p>
       </div>

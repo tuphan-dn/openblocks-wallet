@@ -64,17 +64,16 @@ export default function PasswordBox() {
             checked={hidden}
             onChange={(e) => setHidden(e.target.checked)}
           />
-          <Eye className="swap-on w-4 h-4" />
-          <EyeOff className="swap-off w-4 h-4" />
+          <EyeOff className="swap-on w-4 h-4" />
+          <Eye className="swap-off w-4 h-4" />
         </label>
         <input
           placeholder="Set your password"
           type={hidden ? 'password' : 'text'}
-          className="grow"
+          className="grow text-sm"
           value={pwd}
           onChange={(e) => setPwd(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
-          autoFocus
         />
         <button
           className="btn btn-sm btn-ghost btn-square -mx-2"
@@ -88,7 +87,7 @@ export default function PasswordBox() {
         className="w-full mt-2 text-center opacity-60 cursor-pointer hover:underline flex flex-row gap-2 justify-center items-center"
         onClick={onSignOut}
       >
-        <span>Use another account</span>
+        <span className="text-xs">Use another account</span>
         <span
           className={clsx('loading loading-spinner loading-xs', {
             hidden: !loading,
