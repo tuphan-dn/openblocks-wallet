@@ -1,8 +1,9 @@
 import { z } from 'zod'
 
 import Stack from './stack'
-import { LockBox, SocialBox } from './box'
 import PasswordBox from './box/password'
+import SocialBox from './box/social'
+import LockBox from './box/lock'
 
 import { useSafeRouteLoaderData } from '~lib/hooks/useLoader'
 
