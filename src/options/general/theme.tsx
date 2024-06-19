@@ -39,8 +39,8 @@ export default function Theme({ className }: ThemeProps) {
     >
       <MotionIcon
         className="w-4 h-4"
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
+        initial={{ scale: 0, opacity: 0, rotate: 180 }}
+        animate={{ scale: 1, opacity: 1, rotate: 0 }}
       />
     </button>
   )

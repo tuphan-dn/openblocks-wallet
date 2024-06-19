@@ -15,7 +15,7 @@ module.exports = {
       },
       boxShadow: {
         outer:
-          'inset .5px .5px rgba(255, 255, 255, 0.2), inset -.5px -.5px rgba(0, 0, 0, 0.2), 0 4px 6px -1px #0000001a, 0 2px 4px -2px #0000001a',
+          'inset .5px .5px #ffffff33, inset -.5px -.5px #0000001a, 0 4px 6px -1px #0000001a, 0 2px 4px -2px #0000001a',
       },
       fontFamily: {
         clash: '"Clash Display", sans-serif',

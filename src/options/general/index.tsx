@@ -11,8 +11,6 @@ export default function General() {
         <div className="col-span-2 aspect-square grid grid-cols-2 gap-2">
           <Theme className="col-span-1" />
           <Notification className="col-span-1" />
-          <Theme className="col-span-1" />
-          <Theme className="col-span-1" />
         </div>
         <div className="col-span-2 aspect-square bg-base-100/20 backdrop-blur rounded-box shadow-outer"></div>
       </div>
