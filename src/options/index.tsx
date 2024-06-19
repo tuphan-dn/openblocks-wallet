@@ -13,7 +13,7 @@ const router = createMemoryRouter([
     errorElement: <Error />,
     loader: async () => {
       const session = await getSession()
-      if (session) location.assign('/popup.html')
+      if (!session) location.assign('/popup.html')
       return {}
     },
     children: [

@@ -4,7 +4,7 @@ import Layout from './layout'
 import Page from './page'
 
 import { getSession } from '~lib/auth'
-import { isInitialized } from '~lib/password'
+import Password from '~lib/password'
 
 const Signin: RouteObject = {
   path: 'signin',
@@ -12,9 +12,12 @@ const Signin: RouteObject = {
   element: <Layout />,
   loader: async () => {
     const session = await getSession()
-    const initialized = await isInitialized()
-    if (!session) return { layout: ['social', 'password'] }
-    if (!initialized) return { layout: ['password', 'social'] }
+    if (!session) return { layout: ['social', 'password', 'lock'] }
+    const password = new Password(session.user.id)
+    const initialized = await password.isInitialized()
+    if (!initialized) return { layout: ['password', 'lock', 'social'] }
+    const unlocked = await password.isUnlocked()
+    if (!unlocked) return { layout: ['lock', 'social', 'password'] }
     return redirect('/')
   },
   children: [

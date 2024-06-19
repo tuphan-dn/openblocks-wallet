@@ -13,7 +13,7 @@ export default function Navigation() {
       <Link as={NavLink} to="/app/nft" className="col-span-1" end>
         NFT
       </Link>
-      <Link as="button" className="col-span-1">
+      <Link as="a" href="/options.html" className="col-span-1">
         Settings
       </Link>
     </div>

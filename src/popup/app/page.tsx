@@ -23,7 +23,11 @@ export default function Page() {
         Approve
       </button>
       <p>
-        Fonttest: Whereas disregard and contempt for human rights have resulted
+        Open Sans: Whereas disregard and contempt for human rights have resulted
+      </p>
+      <p className="font-clash">
+        Clash Display: Whereas disregard and contempt for human rights have
+        resulted
       </p>
       <ThemeSwitch />
     </div>

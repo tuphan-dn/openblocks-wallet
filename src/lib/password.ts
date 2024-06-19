@@ -1,50 +1,59 @@
 import { Storage } from '@plasmohq/storage'
 import { keccak_256 } from '@noble/hashes/sha3'
-import { encode } from 'bs58'
+import { decode, encode } from 'bs58'
+import { concatBytes, randomBytes } from '@noble/hashes/utils'
 
-const HASH = 'hash'
-const PASSWORD = 'password'
+export default class Password {
+  private local = new Storage({
+    area: 'local',
+  })
+  private session = new Storage({
+    area: 'session',
+  })
+  private HASH: string
+  private PASSWORD: string
 
-const storage = new Storage({
-  area: 'session',
-})
+  constructor(public readonly identidier: string) {
+    this.HASH = `${identidier}/hash`
+    this.PASSWORD = `${identidier}/password`
+  }
 
-export const hash = (x: string) => {
-  return encode(keccak_256(x))
-}
+  private hash = (pwd: string, salt = randomBytes(32)) => {
+    const x = keccak_256(pwd)
+    const y = keccak_256(concatBytes(salt, x))
+    return encode(concatBytes(salt, y))
+  }
 
-export const isInitialized = async () => {
-  const placeholder = await storage.get(HASH)
-  return !!placeholder
-}
+  set = async (pwd?: string) => {
+    if (!pwd) {
+      await this.session.remove(this.PASSWORD)
+      await this.local.remove(this.HASH)
+    } else {
+      await this.session.set(this.PASSWORD, pwd)
+      await this.local.set(this.HASH, this.hash(pwd))
+    }
+  }
 
-export const isUnlocked = async () => {
-  const pwd = await storage.get(PASSWORD)
-  return !!pwd
-}
+  isInitialized = async () => {
+    const placeholder = await this.local.get(this.HASH)
+    return !!placeholder
+  }
 
-export const set = async (prev: string, next: string) => {
-  const placeholder = await storage.get(HASH)
-  // Insert
-  if (!placeholder && hash(prev) !== hash(next))
-    throw new Error('Wrong confirmation')
-  // Update
-  if (placeholder && hash(prev) !== placeholder)
-    throw new Error('Wrong password')
-  return await storage.set(HASH, hash(next))
-}
+  isUnlocked = async () => {
+    const pwd = await this.session.get(this.PASSWORD)
+    return !!pwd
+  }
 
-export const unset = async () => {
-  return await storage.remove(HASH)
-}
+  unlock = async (pwd: string) => {
+    const img = await this.local.get(this.HASH)
+    if (!img) return false
+    const salt = decode(img).subarray(0, 32)
+    if (this.hash(pwd, salt) !== img) return false
+    await this.session.set(this.PASSWORD, pwd)
+    return true
+  }
 
-export const unlock = async (pwd: string) => {
-  const placeholder = await storage.get(HASH)
-  if (!placeholder) throw new Error('No password profile')
-  if (hash(pwd) !== placeholder) throw new Error('Wrong password')
-  return await storage.set(PASSWORD, pwd)
-}
-
-export const lock = async () => {
-  return await storage.remove(PASSWORD)
+  lock = async () => {
+    return await this.session.remove(this.PASSWORD)
+  }
 }
