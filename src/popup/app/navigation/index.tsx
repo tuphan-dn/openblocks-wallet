@@ -3,7 +3,7 @@ import Link from './link'
 
 export default function Navigation() {
   return (
-    <div className="w-full bg-base-content/20 backdrop-blur px-4 grid grid-cols-4 rounded-t-box shadow-outer">
+    <div className="w-full bg-base-100/20 backdrop-blur px-4 grid grid-cols-4 rounded-t-box shadow-outer">
       <Link as={NavLink} className="col-span-1" to="/app" end>
         Logo
       </Link>
