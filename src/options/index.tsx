@@ -5,6 +5,7 @@ import Layout from './layout'
 import Page from './page'
 
 import { getSession } from '~lib/auth'
+import Password from '~lib/password'
 
 const router = createMemoryRouter([
   {
@@ -13,7 +14,11 @@ const router = createMemoryRouter([
     errorElement: <Error />,
     loader: async () => {
       const session = await getSession()
-      if (!session) location.assign('/popup.html')
+      if (!session) return location.assign('/popup.html')
+      const password = new Password(session.user.id)
+      const initialized = await password.isInitialized()
+      const unlocked = await password.isUnlocked()
+      if (!initialized || !unlocked) return location.assign('/popup.html')
       return {}
     },
     children: [

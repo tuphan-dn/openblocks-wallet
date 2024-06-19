@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAnimate } from 'framer-motion'
 import { useAsync } from 'react-use'
 import clsx from 'clsx'
 
@@ -10,9 +11,11 @@ import Password from '~lib/password'
 
 export default function LockBox() {
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [hidden, setHidden] = useState(true)
   const [pwd, setPwd] = useState('')
   const navigate = useNavigate()
+  const [scope, animate] = useAnimate()
 
   const { value: session } = useAsync(getSession)
 
@@ -26,8 +29,11 @@ export default function LockBox() {
     if (!pwd || !session?.user.id) return
     const password = new Password(session.user.id)
     const unlocked = await password.unlock(pwd)
-    if (unlocked) navigate('/app')
-  }, [session?.user.id, pwd, navigate])
+    if (!unlocked) {
+      animate(scope.current, { translateX: [0, 5, -5, 0] }, { duration: 0.1 })
+      setError('Wrong password')
+    } else navigate('/app')
+  }, [session?.user.id, pwd, navigate, scope, animate])
 
   return (
     <div className="w-full h-full flex flex-col gap-2">
@@ -52,7 +58,16 @@ export default function LockBox() {
           </button>
         </div>
       </div>
-      <div className="w-full input rounded-box !border-none !outline-none bg-base-100 flex flex-row items-center gap-4">
+      <div
+        className={clsx(
+          'w-full input rounded-box bg-base-200 !border-none flex flex-row items-center gap-4',
+          {
+            '!outline-none': !error,
+            'input-error': error,
+          },
+        )}
+        ref={scope}
+      >
         <label className="swap">
           <input
             type="checkbox"
@@ -67,7 +82,10 @@ export default function LockBox() {
           type={hidden ? 'password' : 'text'}
           className="grow text-sm"
           value={pwd}
-          onChange={(e) => setPwd(e.target.value)}
+          onChange={(e) => {
+            setError('')
+            setPwd(e.target.value)
+          }}
           onKeyDown={(e) => e.key === 'Enter' && onUnlock()}
           autoFocus
         />
