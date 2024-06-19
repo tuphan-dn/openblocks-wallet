@@ -27,7 +27,7 @@ export default function Stack({
         .map(({ id, children }, i) => (
           <motion.div
             key={id}
-            className="absolute w-full h-full rounded-3xl p-4 bg-base-100 shadow-lg border-2 border-base-300 origin-top flex flex-col gap-4"
+            className="absolute w-full h-full rounded-3xl p-4 bg-base-100 shadow-lg ring-2 ring-base-300/50 origin-top flex flex-col gap-4"
             animate={{
               top: i * -offset,
               scale: 1 - i * scale,
