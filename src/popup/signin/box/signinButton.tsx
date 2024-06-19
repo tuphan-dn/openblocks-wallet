@@ -19,7 +19,7 @@ export function FullButton({
 }: FullButtonProps) {
   return (
     <button
-      className="w-full btn rounded-box bg-base-100 relative"
+      className="w-full btn rounded-box relative"
       onClick={onClick}
       disabled={loading || disabled}
     >
@@ -49,7 +49,7 @@ export function LiteButton({
 }: LiteButtonProps) {
   return (
     <button
-      className="btn btn-square rounded-box bg-base-100"
+      className="btn btn-square rounded-box"
       onClick={onClick}
       disabled={loading || disabled}
     >

@@ -57,7 +57,7 @@ export default function PasswordBox() {
       <div className="w-[calc(100%-2rem)] mx-4">
         <StrengthMeter value={passwordStrength(pwd)} />
       </div>
-      <div className="w-full input rounded-box !border-none !outline-none bg-base-100 flex flex-row items-center gap-4">
+      <div className="w-full input rounded-box !border-none !outline-none bg-base-200 flex flex-row items-center gap-4">
         <label className="swap">
           <input
             type="checkbox"

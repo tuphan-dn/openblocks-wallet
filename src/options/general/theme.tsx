@@ -1,24 +1,25 @@
 import { useCallback, useMemo } from 'react'
 import { useTheme } from 'next-themes'
-
-import { Monitor, Moon, Sun } from 'lucide-react'
+import { motion } from 'framer-motion'
 import clsx from 'clsx'
 
-export type ThemeSwitchProps = {
+import { Monitor, Moon, Sun } from 'lucide-react'
+
+export type ThemeProps = {
   className?: string
 }
 
-export default function ThemeSwitch({ className }: ThemeSwitchProps) {
+export default function Theme({ className }: ThemeProps) {
   const { theme, setTheme } = useTheme()
 
-  const Icon = useMemo(() => {
+  const MotionIcon = useMemo(() => {
     switch (theme) {
       case 'light':
-        return Sun
+        return motion(Sun)
       case 'dark':
-        return Moon
+        return motion(Moon)
       default:
-        return Monitor
+        return motion(Monitor)
     }
   }, [theme])
 
@@ -36,7 +37,11 @@ export default function ThemeSwitch({ className }: ThemeSwitchProps) {
       )}
       onClick={onTheme}
     >
-      <Icon className="w-4 h-4" />
+      <MotionIcon
+        className="w-4 h-4"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+      />
     </button>
   )
 }
