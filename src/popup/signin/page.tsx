@@ -9,6 +9,7 @@ import SocialBox from './box/social'
 import LockBox from './box/lock'
 
 import { useSafeRouteLoaderData } from '~lib/hooks/useLoader'
+import Noise from '~components/noise'
 
 const MotionMouse = motion(Mouse)
 
@@ -33,7 +34,7 @@ export default function Page() {
   return (
     <div className="w-full h-full flex flex-col p-4">
       <div
-        className="grow w-[calc(100%+2rem)] h-0 -m-4 shadow-lg cursor-none overflow-auto no-scrollbar"
+        className="grow w-[calc(100%+2rem)] h-0 -m-4 shadow-lg cursor-none overflow-auto no-scrollbar relative"
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       >
@@ -50,6 +51,7 @@ export default function Page() {
           />
         </motion.div>
         <div className="bg-gradient-to-b from-primary to-base-content w-full h-[1024px]" />
+        <Noise />
       </div>
       <Stack
         items={[
