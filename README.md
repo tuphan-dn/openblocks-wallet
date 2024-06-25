@@ -1,1 +1,1 @@
-# openblocks-wallet
+# Openblocks Wallet
