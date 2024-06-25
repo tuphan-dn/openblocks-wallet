@@ -11,18 +11,27 @@ export const getSession = async () => {
   return session
 }
 
-export const signIn = async (provider: Provider, scopes = 'email') => {
-  const {
-    data: { url },
-  } = await supabase.auth.signInWithOAuth({
-    provider,
-    options: {
-      scopes,
-      redirectTo: location.href.replace(/(#+)$/g, ''),
-      skipBrowserRedirect: true,
-    },
-  })
-  return url
+type SignInParams = { provider: Provider; scopes?: string } | { email: string }
+
+export const signIn = async (args: SignInParams) => {
+  if ('email' in args) {
+    await supabase.auth.signInWithOtp({ email: args.email })
+    return null
+  }
+  if ('provider' in args) {
+    const {
+      data: { url },
+    } = await supabase.auth.signInWithOAuth({
+      provider: args.provider,
+      options: {
+        scopes: args.scopes || 'email',
+        redirectTo: location.href.replace(/(#+)$/g, ''),
+        skipBrowserRedirect: true,
+      },
+    })
+    return url
+  }
+  throw new Error('Invalid signin parameters')
 }
 
 export const signOut = async () => {
