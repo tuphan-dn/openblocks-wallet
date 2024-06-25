@@ -13,15 +13,14 @@ export default function Panel() {
       onMouseLeave={() => setActive(false)}
     >
       <Cursor visible={active} />
-      <div className="w-full absolute top-4 flex flex-row justify-center">
+      <div className="w-full h-[calc(100%-2rem)] p-4 flex flex-col justify-between items-center gap-4">
         <div className="px-4 py-2 rounded-full backdrop-blur bg-base-100/50 shadow-out">
           <p className="opacity-60">Openblocks Wallet</p>
         </div>
-      </div>
-      <div className="w-full h-[calc(100%-2rem)] p-4 flex flex-col justify-center items-center gap-4">
         <span className="font-clash font-black text-4xl text-center mix-blend-color-burn">
           Openblocks Wallet: The modular crypto wallet; Especially, opensource.
         </span>
+        <span />
       </div>
       <Noise />
     </div>

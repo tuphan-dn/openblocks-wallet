@@ -55,7 +55,7 @@ export default function SocialBox() {
           loading={loading}
         />
         <div className="grow" />
-        <button className="btn btn-square btn-ghost">
+        <button className="btn btn-square btn-ghost rounded-box">
           <Ellipsis className="w-4 h-4" />
         </button>
       </div>
