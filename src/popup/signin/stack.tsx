@@ -34,12 +34,7 @@ export default function Stack({
               zIndex: items.length - i,
             }}
           >
-            <motion.div
-              className="w-full h-full"
-              animate={{ opacity: !i ? 1 : 0.2 }}
-            >
-              {children}
-            </motion.div>
+            {!i ? children : null}
           </motion.div>
         ))}
     </div>

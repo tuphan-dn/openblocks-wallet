@@ -47,6 +47,9 @@ dependencies:
   immer:
     specifier: ^10.1.1
     version: 10.1.1
+  kaboom:
+    specifier: ^3000.1.17
+    version: 3000.1.17
   lucide-react:
     specifier: ^0.394.0
     version: 0.394.0(react@18.3.1)
@@ -5538,6 +5541,10 @@ packages:
       object.assign: 4.1.5
       object.values: 1.2.0
     dev: true
+
+  /kaboom@3000.1.17:
+    resolution: {integrity: sha512-npAtjGxj9Oj9vLpXfURck9eUPHR2ac1Lhc1bNcZ0NWcs+Lgs40Ty+wjujv1C2DwjWvxaX+3r2G64M35BS/Ry2g==}
+    dev: false
 
   /keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}

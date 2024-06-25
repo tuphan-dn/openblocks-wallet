@@ -74,6 +74,7 @@ export default function PasswordBox() {
           value={pwd}
           onChange={(e) => setPwd(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && onSubmit()}
+          autoFocus
         />
         <button
           className="btn btn-sm btn-ghost btn-square -mx-2"

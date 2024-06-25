@@ -9,9 +9,25 @@ module.exports = {
           from: { opacity: '0', transform: 'scaleX(0.95) scaleY(0.95)' },
           to: { opacity: '1', transform: 'scaleX(1) scaleY(1)' },
         },
+        noise: {
+          '0%, 100%': { backgroundPosition: '0 0' },
+          '10%': { backgroundPosition: '-5% -10%' },
+          '20%': { backgroundPosition: '-15% 5%' },
+          '30%': { backgroundPosition: '7% -25%' },
+          '40%': { backgroundPosition: '20% 25%' },
+          '50%': { backgroundPosition: '-25% 10%' },
+          '60%': { backgroundPosition: '15% 5%' },
+          '70%': { backgroundPosition: '0% 15%' },
+          '80%': { backgroundPosition: '25% 35%' },
+          '90%': { backgroundPosition: '-10% 10%' },
+        },
       },
       animation: {
         'pop-in': 'pop-in 200ms cubic-bezier(0, 0, 0.2, 1)',
+        noise: 'noise 200ms infinite;',
+      },
+      backgroundImage: {
+        noise: "url('/assets/noise.png')",
       },
       boxShadow: {
         outer:
