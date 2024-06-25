@@ -6,7 +6,7 @@ import Token from './token'
 import Nft from './nft'
 
 import { getSession } from '~lib/auth'
-import Password from '~lib/password'
+import { Password } from '~lib/password'
 
 const App: RouteObject = {
   path: 'app',

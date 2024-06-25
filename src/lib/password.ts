@@ -3,7 +3,7 @@ import { keccak_256 } from '@noble/hashes/sha3'
 import { decode, encode } from 'bs58'
 import { concatBytes, randomBytes } from '@noble/hashes/utils'
 
-export default class Password {
+export class Password {
   private local = new Storage({
     area: 'local',
   })

@@ -5,7 +5,7 @@ import { ArrowRight, Eye, EyeOff } from 'lucide-react'
 import StrengthMeter from '~components/strengthMeter'
 
 import { signOut, useSession } from '~lib/auth'
-import Password from '~lib/password'
+import { Password } from '~lib/password'
 
 function passwordStrength(pwd: string) {
   let point = 0

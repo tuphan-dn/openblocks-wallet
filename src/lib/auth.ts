@@ -1,6 +1,6 @@
 import type { Provider } from '@supabase/supabase-js'
 import { useAsync } from 'react-use'
-import Password from './password'
+import { Password } from './password'
 import { supabase } from './supabase'
 
 export const getSession = async () => {

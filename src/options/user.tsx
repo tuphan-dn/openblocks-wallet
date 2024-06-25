@@ -4,7 +4,7 @@ import { Home } from 'lucide-react'
 import Modal from '~components/ui/modal'
 
 import { signOut, useSession } from '~lib/auth'
-import Password from '~lib/password'
+import { Password } from '~lib/password'
 
 export default function User() {
   const [open, setOpen] = useState(false)

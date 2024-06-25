@@ -5,7 +5,7 @@ import Layout from './layout'
 import Page from './page'
 
 import { getSession } from '~lib/auth'
-import Password from '~lib/password'
+import { Password } from '~lib/password'
 
 const router = createMemoryRouter([
   {

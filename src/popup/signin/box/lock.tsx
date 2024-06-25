@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { ArrowRight, Eye, EyeOff, LogOut } from 'lucide-react'
 
 import { signOut, useSession } from '~lib/auth'
-import Password from '~lib/password'
+import { Password } from '~lib/password'
 
 export default function LockBox() {
   const [loading, setLoading] = useState(false)
