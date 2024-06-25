@@ -71,6 +71,7 @@
     ],
     "key": "$CRX_KEY",
     "permissions": [
+      "identity",
       "tabs"
     ],
     "web_accessible_resources": [
@@ -85,6 +86,14 @@
           "$CRX_ID"
         ]
       }
-    ]
+    ],
+    "oauth2": {
+      "client_id": "875773420031-9f3dhfj58sf90bcg2tdft5m4euhmnmps.apps.googleusercontent.com",
+      "scopes": [
+        "openid",
+        "email",
+        "profile"
+      ]
+    }
   }
 }
