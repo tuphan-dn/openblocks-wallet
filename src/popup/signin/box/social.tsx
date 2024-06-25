@@ -149,7 +149,7 @@ export default function SocialBox() {
               <button
                 className="w-full btn btn-primary"
                 onClick={onEmail}
-                disabled={sent > 1}
+                disabled={sent > 1 || loading}
               >
                 Resend the magic link
                 {sent > 1 ? ` (${sent}s)` : ''}
