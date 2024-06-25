@@ -16,31 +16,24 @@ import { ArrowRight } from 'lucide-react'
 import Modal from '~components/ui/modal'
 
 import { signIn } from '~lib/auth'
-import { isEmailAddress } from '~lib/utils'
+import { diagnosisError, isEmailAddress } from '~lib/utils'
 
 function SocialButton({
   icon: Icon,
   onClick,
-  loading = false,
   disabled = false,
 }: {
   icon: IconType
   onClick: () => void | Promise<void>
-  loading?: boolean
   disabled?: boolean
 }) {
   return (
     <button
       className="btn btn-square rounded-box"
       onClick={onClick}
-      disabled={loading || disabled}
+      disabled={disabled}
     >
-      <Icon className={clsx('w-4 h-4', { hidden: loading })} />
-      <span
-        className={clsx('loading loading-spinner loading-sm', {
-          hidden: !loading,
-        })}
-      />
+      <Icon className="w-4 h-4" />
     </button>
   )
 }
@@ -62,9 +55,16 @@ export default function SocialBox() {
   }, [])
 
   const onEmail = useCallback(async () => {
-    if (!isEmailAddress(email)) return setError('Invalid email address')
-    await signIn({ email })
-    return setSent(60)
+    try {
+      setLoading(true)
+      if (!isEmailAddress(email)) throw new Error('Invalid email address')
+      await signIn({ email })
+      setSent(60)
+    } catch (er) {
+      setError(diagnosisError(er))
+    } finally {
+      setLoading(false)
+    }
   }, [email])
 
   useEffect(() => {
@@ -86,31 +86,23 @@ export default function SocialBox() {
         <SocialButton
           icon={SiGoogle}
           onClick={() => onSignIn('google')}
-          loading={loading}
           disabled
         />
         <SocialButton
           icon={SiApple}
           onClick={() => onSignIn('apple')}
-          loading={loading}
           disabled
         />
         <SocialButton
           icon={SiFacebook}
           onClick={() => onSignIn('facebook')}
-          loading={loading}
           disabled
         />
-        <SocialButton
-          icon={SiX}
-          onClick={() => onSignIn('twitter')}
-          loading={loading}
-          disabled
-        />
+        <SocialButton icon={SiX} onClick={() => onSignIn('twitter')} disabled />
         <SocialButton
           icon={SiGithub}
           onClick={() => onSignIn('github')}
-          loading={loading}
+          disabled={loading}
         />
       </div>
       <span className="divider divider-vertical opacity-60 text-xs m-0">
@@ -135,7 +127,7 @@ export default function SocialBox() {
             setError('')
             setSent(0)
           }}
-          onKeyDown={(e) => e.key === 'Enter' && onEmail()}
+          onKeyDown={(e) => e.key === 'Enter' && !loading && onEmail()}
         />
         <button
           className="btn btn-primary btn-square btn-sm -mr-2"
@@ -159,7 +151,7 @@ export default function SocialBox() {
                 onClick={onEmail}
                 disabled={sent > 1}
               >
-                Resend the signin link
+                Resend the magic link
                 {sent > 1 ? ` (${sent}s)` : ''}
               </button>
               <span

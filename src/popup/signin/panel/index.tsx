@@ -14,7 +14,7 @@ export default function Panel() {
     >
       <Cursor visible={active} />
       <div className="w-full h-[calc(100%-2rem)] p-4 flex flex-col justify-between items-center gap-4">
-        <div className="px-4 py-2 rounded-full backdrop-blur bg-base-100/50 shadow-out">
+        <div className="px-4 py-2 rounded-full backdrop-blur bg-base-100/50 shadow-outer">
           <p className="text-xs opacity-60 font-bold">Openblocks Wallet</p>
         </div>
         <span className="font-clash font-black text-4xl text-center mix-blend-color-burn">
