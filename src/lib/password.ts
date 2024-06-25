@@ -4,12 +4,8 @@ import { decode, encode } from 'bs58'
 import { concatBytes, randomBytes } from '@noble/hashes/utils'
 
 export class Password {
-  private local = new Storage({
-    area: 'local',
-  })
-  private session = new Storage({
-    area: 'session',
-  })
+  private local = new Storage({ area: 'local' })
+  private session = new Storage({ area: 'session' })
   private HASH: string
   private PASSWORD: string
 
