@@ -1,10 +1,10 @@
 import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 
 import Layout from './layout'
-import Error from './error'
 import Page from './page'
 import App from './app'
 import Signin from './signin'
+import Error from '~components/error'
 
 const router = createMemoryRouter([
   {
