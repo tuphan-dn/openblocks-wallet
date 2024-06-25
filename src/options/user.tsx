@@ -1,16 +1,14 @@
 import { useCallback, useState } from 'react'
-import { useAsync } from 'react-use'
 
 import { Home } from 'lucide-react'
 import Modal from '~components/ui/modal'
 
-import { getSession, signOut } from '~lib/auth'
+import { signOut, useSession } from '~lib/auth'
 import Password from '~lib/password'
 
 export default function User() {
   const [open, setOpen] = useState(false)
-
-  const { value: session } = useAsync(getSession, [])
+  const session = useSession()
 
   const onSignOut = useCallback(async () => {
     await signOut()

@@ -1,11 +1,10 @@
 import { useCallback, useState } from 'react'
-import { useAsync } from 'react-use'
 import clsx from 'clsx'
 
 import { ArrowRight, Eye, EyeOff } from 'lucide-react'
 import StrengthMeter from '~components/strengthMeter'
 
-import { getSession, signOut } from '~lib/auth'
+import { signOut, useSession } from '~lib/auth'
 import Password from '~lib/password'
 
 function passwordStrength(pwd: string) {
@@ -25,8 +24,7 @@ export default function PasswordBox() {
   const [loading, setLoading] = useState(false)
   const [hidden, setHidden] = useState(true)
   const [pwd, setPwd] = useState('')
-
-  const { value: session } = useAsync(getSession)
+  const session = useSession()
 
   const onSignOut = useCallback(async () => {
     setLoading(true)

@@ -1,4 +1,5 @@
 import type { Provider } from '@supabase/supabase-js'
+import { useAsync } from 'react-use'
 import Password from './password'
 import { supabase } from './supabase'
 
@@ -11,9 +12,14 @@ export const getSession = async () => {
   return session
 }
 
-type SignInParams = { provider: Provider; scopes?: string } | { email: string }
+export const useSession = () => {
+  const { value: session } = useAsync(getSession, [])
+  return session || undefined
+}
 
-export const signIn = async (args: SignInParams) => {
+export const signIn = async (
+  args: { provider: Provider; scopes?: string } | { email: string },
+) => {
   if ('email' in args) {
     await supabase.auth.signInWithOtp({ email: args.email })
     return null
