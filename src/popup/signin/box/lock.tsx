@@ -88,7 +88,7 @@ export default function LockBox() {
           autoFocus
         />
         <button
-          className="btn btn-sm btn-ghost btn-square -mx-2"
+          className="btn btn-sm btn-primary btn-square -mx-2"
           onClick={onUnlock}
           disabled={!pwd}
         >

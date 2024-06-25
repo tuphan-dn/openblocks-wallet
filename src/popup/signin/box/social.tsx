@@ -110,7 +110,7 @@ export default function SocialBox() {
       </span>
       <label
         className={clsx(
-          'input !border-none bg-base-200 flex flex-row gap-2 items-center',
+          'input !border-none bg-base-200 rounded-box flex flex-row gap-2 items-center',
           {
             '!outline-none': !error,
             'input-error': error,
