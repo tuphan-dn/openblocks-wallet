@@ -58,9 +58,9 @@ export default function LockBox() {
       </div>
       <div
         className={clsx(
-          'w-full input rounded-box bg-base-200 !border-none flex flex-row items-center gap-4',
+          'w-full input rounded-box bg-base-200 !outline-none flex flex-row items-center gap-4',
           {
-            '!outline-none': !error,
+            '!border-none': !error,
             'input-error': error,
           },
         )}

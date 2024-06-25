@@ -42,9 +42,9 @@ export default function EmailButton() {
   return (
     <label
       className={clsx(
-        'input !border-none bg-base-200 rounded-box flex flex-row gap-2 items-center',
+        'input bg-base-200 !outline-none rounded-box flex flex-row gap-2 items-center',
         {
-          '!outline-none': !error,
+          '!border-none': !error,
           'input-error': error,
         },
       )}
