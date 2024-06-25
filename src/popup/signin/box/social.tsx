@@ -138,13 +138,13 @@ export default function SocialBox() {
         </button>
         <Modal open={!!sent} onCancel={() => setSent(0)}>
           <div className="grid grid-cols-2 gap-4">
-            <p className="col-span-full font-bold font-clash">
+            <h3 className="col-span-full font-bold font-clash">
               Check your mailbox
-            </p>
-            <span className="col-span-full text-sm opacity-60">
+            </h3>
+            <p className="col-span-full text-sm opacity-60 -mt-2 mb-2">
               A magic link was sent to your mailbox. Click to that link to
               verify your email and signin to the wallet.
-            </span>
+            </p>
             <div className="col-span-full flex flex-col gap-2">
               <button
                 className="w-full btn btn-primary"
