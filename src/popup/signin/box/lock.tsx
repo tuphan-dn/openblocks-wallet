@@ -1,13 +1,12 @@
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAnimate } from 'framer-motion'
-import { useAsync } from 'react-use'
 import clsx from 'clsx'
 
 import { ArrowRight, Eye, EyeOff, LogOut } from 'lucide-react'
 
-import { getSession, signOut } from '~lib/auth'
-import Password from '~lib/password'
+import { signOut, useSession } from '~lib/auth'
+import { Password } from '~lib/password'
 
 export default function LockBox() {
   const [loading, setLoading] = useState(false)
@@ -16,8 +15,7 @@ export default function LockBox() {
   const [pwd, setPwd] = useState('')
   const navigate = useNavigate()
   const [scope, animate] = useAnimate()
-
-  const { value: session } = useAsync(getSession)
+  const session = useSession()
 
   const onSignOut = useCallback(async () => {
     setLoading(true)
@@ -90,7 +88,7 @@ export default function LockBox() {
           autoFocus
         />
         <button
-          className="btn btn-sm btn-ghost btn-square -mx-2"
+          className="btn btn-sm btn-primary btn-square -mx-2"
           onClick={onUnlock}
           disabled={!pwd}
         >

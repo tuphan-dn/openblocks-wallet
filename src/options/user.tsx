@@ -1,16 +1,14 @@
 import { useCallback, useState } from 'react'
-import { useAsync } from 'react-use'
 
 import { Home } from 'lucide-react'
 import Modal from '~components/ui/modal'
 
-import { getSession, signOut } from '~lib/auth'
-import Password from '~lib/password'
+import { signOut, useSession } from '~lib/auth'
+import { Password } from '~lib/password'
 
 export default function User() {
   const [open, setOpen] = useState(false)
-
-  const { value: session } = useAsync(getSession, [])
+  const session = useSession()
 
   const onSignOut = useCallback(async () => {
     await signOut()
@@ -52,7 +50,7 @@ export default function User() {
           </p>
         </span>
         <Modal open={open} onCancel={() => setOpen(false)}>
-          <div className="w-full grid grid-cols-2 gap-4">
+          <div className="w-full grid grid-cols-2 gap-y-4 gap-x-2">
             <h3 className="col-span-full font-semibold font-clash">Sign Out</h3>
             <p className="col-span-full text-sm opacity-60 -mt-2 mb-2">
               All the current account&apos;s data will be cleared! Are you sure
