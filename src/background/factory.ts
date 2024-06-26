@@ -1,10 +1,10 @@
 import type { MessagesMetadata, PlasmoMessaging } from '@plasmohq/messaging'
-import { z, type ZodRawShape } from 'zod'
+import { z } from 'zod'
 import { diagnosisError } from '~lib/utils'
 
-export function factory<T extends ZodRawShape, S extends ZodRawShape>(
-  bodydto: z.ZodObject<T>,
-  datadto: z.ZodObject<S>,
+export function factory<T, S>(
+  bodydto: z.ZodSchema<T>,
+  datadto: z.ZodSchema<S>,
   handler: (
     req: PlasmoMessaging.Request<
       keyof MessagesMetadata,

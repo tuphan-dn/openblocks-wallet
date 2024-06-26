@@ -1,5 +1,4 @@
 import { useCallback } from 'react'
-import type { Provider } from '@supabase/supabase-js'
 
 import {
   SiApple,
@@ -11,7 +10,8 @@ import GoogleButton from './google'
 import GithubButton from './github'
 import EmailButton from './email'
 
-import { signInWithOAuth } from '~lib/auth'
+import { signIn } from '~lib/auth'
+import { AuthProvider, AuthType } from '~background/messages/auth'
 
 function SocialButton({
   icon: Icon,
@@ -34,12 +34,11 @@ function SocialButton({
 }
 
 export default function SocialBox() {
-  const onSignIn = useCallback(async (provider: Provider) => {
-    const url = await signInWithOAuth(provider)
-    if (url) {
-      window.open(url)
-      window.close()
-    }
+  const onSignIn = useCallback(async (provider: AuthProvider) => {
+    const re = await signIn({ type: AuthType.OAuth, provider })
+    if (typeof re === 'string') throw new Error(re)
+    window.open(re.url)
+    window.close()
   }, [])
 
   return (
@@ -51,15 +50,19 @@ export default function SocialBox() {
         <GoogleButton />
         <SocialButton
           icon={SiApple}
-          onClick={() => onSignIn('apple')}
+          onClick={() => onSignIn(AuthProvider.Apple)}
           disabled
         />
         <SocialButton
           icon={SiFacebook}
-          onClick={() => onSignIn('facebook')}
+          onClick={() => onSignIn(AuthProvider.Facebook)}
           disabled
         />
-        <SocialButton icon={SiX} onClick={() => onSignIn('twitter')} disabled />
+        <SocialButton
+          icon={SiX}
+          onClick={() => onSignIn(AuthProvider.Twitter)}
+          disabled
+        />
         <GithubButton />
       </div>
       <span className="divider divider-vertical opacity-60 text-xs m-0">

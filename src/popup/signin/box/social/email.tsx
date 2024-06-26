@@ -6,8 +6,9 @@ import clsx from 'clsx'
 import { ArrowRight } from 'lucide-react'
 import Modal from '~components/ui/modal'
 
-import { signInWithOtp } from '~lib/auth'
+import { signIn } from '~lib/auth'
 import { diagnosisError, isEmailAddress } from '~lib/utils'
+import { AuthType } from '~background/messages/auth'
 
 export default function EmailButton() {
   const [loading, setLoading] = useState(false)
@@ -20,7 +21,7 @@ export default function EmailButton() {
     try {
       setLoading(true)
       if (!isEmailAddress(email)) throw new Error('Invalid email address')
-      await signInWithOtp(email)
+      await signIn({ type: AuthType.OTP, email })
       setSent(60)
     } catch (er) {
       setError(diagnosisError(er))

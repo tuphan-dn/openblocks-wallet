@@ -20,5 +20,4 @@ const handler = factory(SignRequestDto, SignResponseDto, async ({ body }) => {
   if (!data) throw new Error('User has rejected the request')
   return data
 })
-
 export default handler
