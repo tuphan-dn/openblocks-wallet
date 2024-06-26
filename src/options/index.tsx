@@ -1,6 +1,6 @@
 import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 
-import Error from './error'
+import Error from '~components/error'
 import Layout from './layout'
 import Page from './page'
 
