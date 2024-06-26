@@ -4,8 +4,9 @@ import clsx from 'clsx'
 import { SiGithub } from '@icons-pack/react-simple-icons'
 
 import { usePushMessage } from '~components/message/store'
-import { signInWithOAuth } from '~lib/auth'
+import { signIn } from '~lib/auth'
 import { diagnosisError } from '~lib/utils'
+import { AuthProvider, AuthType } from '~background/messages/auth'
 
 export default function GithubButton() {
   const [loading, setLoading] = useState(false)
@@ -14,11 +15,13 @@ export default function GithubButton() {
   const onClick = useCallback(async () => {
     try {
       setLoading(true)
-      const url = await signInWithOAuth('github')
-      if (url) {
-        window.open(url)
-        window.close()
-      }
+      const re = await signIn({
+        type: AuthType.OAuth,
+        provider: AuthProvider.Github,
+      })
+      if (typeof re === 'string') throw new Error(re)
+      window.open(re.url)
+      window.close()
     } catch (er) {
       pushMessage('error', diagnosisError(er))
     } finally {

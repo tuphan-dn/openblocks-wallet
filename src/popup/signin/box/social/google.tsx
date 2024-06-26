@@ -3,9 +3,10 @@ import clsx from 'clsx'
 
 import { SiGoogle } from '@icons-pack/react-simple-icons'
 
-import { signInWithIdToken } from '~lib/auth'
 import { usePushMessage } from '~components/message/store'
 import { diagnosisError } from '~lib/utils'
+import { AuthType } from '~background/messages/auth'
+import { signIn } from '~lib/auth'
 
 export default function GoogleButton() {
   const [loading, setLoading] = useState(false)
@@ -14,8 +15,7 @@ export default function GoogleButton() {
   const onClick = useCallback(async () => {
     try {
       setLoading(true)
-      await signInWithIdToken()
-      location.reload()
+      await signIn({ type: AuthType.IdToken })
     } catch (er) {
       pushMessage('error', diagnosisError(er))
     } finally {

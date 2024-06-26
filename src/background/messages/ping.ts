@@ -15,5 +15,4 @@ export type PingResponse = z.infer<typeof PingResponseDto>
 const handler = factory(PingRequestDto, PingResponseDto, async ({ body }) => {
   return { id: body.id, ts: Date.now() }
 })
-
 export default handler
