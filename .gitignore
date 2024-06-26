@@ -38,3 +38,6 @@ keys.json
 
 # typescript
 .tsbuildinfo
+
+# supabase
+.temp
