@@ -10,11 +10,6 @@ export default function User() {
   const [open, setOpen] = useState(false)
   const session = useSession()
 
-  const onSignOut = useCallback(async () => {
-    await signOut()
-    location.reload()
-  }, [])
-
   const onLock = useCallback(async () => {
     if (!session) return
     const password = new Password(session.user.id)
@@ -59,7 +54,7 @@ export default function User() {
             <button className="btn col-span-1" onClick={() => setOpen(false)}>
               Cancel
             </button>
-            <button className="btn btn-error col-span-1" onClick={onSignOut}>
+            <button className="btn btn-error col-span-1" onClick={signOut}>
               Yes, I am
             </button>
           </div>

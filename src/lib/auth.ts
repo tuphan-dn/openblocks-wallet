@@ -26,10 +26,9 @@ export const signIn = async (
 
 export const signOut = async () => {
   const session = await getSession()
-  if (session) {
-    await supabase.auth.signOut()
-    const password = new Password(session.user.id)
-    await password.set()
-    location.reload()
-  }
+  if (!session) return
+  await supabase.auth.signOut()
+  const password = new Password(session.user.id)
+  await password.set()
+  location.reload()
 }
