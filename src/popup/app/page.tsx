@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useCallback } from 'react'
+import useSWR from 'swr'
 
 import type { SignRequest, SignResponse } from '~background/messages/sign'
 import { useSession } from '~lib/auth'
@@ -9,6 +10,22 @@ export default function Page() {
   const tunnel = useTunnel<SignRequest, SignResponse>()
   const session = useSession()
 
+  const { data = [] } = useSWR(
+    'https://wkktjwtivwbkjnjyfwxb.supabase.co/functions/v1/secret-share',
+    async (api: string) => {
+      const {
+        data: { data, error },
+      } = await axios.get<EdgeResponse<SecretShare[]>>(api, {
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`,
+        },
+      })
+      if (error) throw new Error(error.message)
+      return data || undefined
+    },
+  )
+  console.log('GET', data)
+
   const onApprove = useCallback(() => {
     tunnel?.send({ sig: 'sig', addr: '0xabd' })
     return window.close()
@@ -16,15 +33,21 @@ export default function Page() {
 
   const onRequest = useCallback(async () => {
     if (!session) return
-    const { data } = await axios.get(
+    const {
+      data: { data, error },
+    } = await axios.patch<EdgeResponse<SecretShare[]>>(
       'https://wkktjwtivwbkjnjyfwxb.supabase.co/functions/v1/secret-share',
+      {
+        secret: Math.random().toString(),
+      },
       {
         headers: {
           Authorization: `Bearer ${session.access_token}`,
         },
       },
     )
-    console.log(data)
+    if (error) throw new Error(error.message)
+    console.log('POST', data)
   }, [session])
 
   return (

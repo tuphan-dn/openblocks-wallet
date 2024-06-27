@@ -16,9 +16,11 @@ Deno.serve(async (req: Request) => {
       },
     },
   );
+  const user_id = (await sbc.auth.getUser()).data.user?.id;
+  if (!user_id) throw new Error("Unauthorized");
   // GET
   if (req.method === "GET") {
-    const data = await sbc.from("secret_shares").select("*");
+    const data = await sbc.from("secret_shares").select("*").limit(1);
     return new Response(
       JSON.stringify(data),
       { headers: { "Content-Type": "application/json" } },
@@ -30,7 +32,19 @@ Deno.serve(async (req: Request) => {
     const data = await sbc.from("secret_shares").insert({
       secret,
       updated_at: new Date(),
-    });
+    }).select();
+    return new Response(
+      JSON.stringify(data),
+      { headers: { "Content-Type": "application/json" } },
+    );
+  }
+  // PATCH
+  if (req.method === "PATCH") {
+    const { secret }: { secret: string } = await req.json();
+    const data = await sbc.from("secret_shares").update({
+      secret,
+      updated_at: new Date(),
+    }).eq("user_id", user_id).select();
     return new Response(
       JSON.stringify(data),
       { headers: { "Content-Type": "application/json" } },
