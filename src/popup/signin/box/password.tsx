@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import clsx from 'clsx'
+import { z } from 'zod'
 
 import { ArrowRight, Eye, EyeOff } from 'lucide-react'
 import StrengthMeter from '~components/strengthMeter'
@@ -7,6 +8,7 @@ import { UserAvatar, UserEmail } from '~components/user'
 
 import { signOut, useSession } from '~lib/auth'
 import { Password } from '~lib/password'
+import { useSafeRouteLoaderData } from '~lib/hooks/useLoader'
 
 function passwordStrength(pwd: string) {
   let point = 0
@@ -26,6 +28,11 @@ export default function PasswordBox() {
   const [hidden, setHidden] = useState(true)
   const [pwd, setPwd] = useState('')
   const session = useSession()
+  const { secret_share } = useSafeRouteLoaderData(
+    'signin',
+    z.object({ secret_share: z.object({ secret: z.string() }).optional() }),
+  )
+  console.log(secret_share)
 
   const onSignOut = useCallback(async () => {
     setLoading(true)
