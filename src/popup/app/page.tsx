@@ -1,6 +1,5 @@
-import axios from 'axios'
 import { useCallback } from 'react'
-import useSWR from 'swr'
+import axios from 'axios'
 
 import type { SignRequest, SignResponse } from '~background/messages/sign'
 import { useSession } from '~lib/auth'
@@ -9,22 +8,6 @@ import { useTunnel } from '~lib/tunnel'
 export default function Page() {
   const tunnel = useTunnel<SignRequest, SignResponse>()
   const session = useSession()
-
-  const { data = [] } = useSWR(
-    'https://wkktjwtivwbkjnjyfwxb.supabase.co/functions/v1/secret-share',
-    async (api: string) => {
-      const {
-        data: { data, error },
-      } = await axios.get<EdgeResponse<SecretShare[]>>(api, {
-        headers: {
-          Authorization: `Bearer ${session?.access_token}`,
-        },
-      })
-      if (error) throw new Error(error.message)
-      return data || undefined
-    },
-  )
-  console.log('GET', data)
 
   const onApprove = useCallback(() => {
     tunnel?.send({ sig: 'sig', addr: '0xabd' })

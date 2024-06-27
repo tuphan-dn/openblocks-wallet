@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAnimate } from 'framer-motion'
 import clsx from 'clsx'
 
-import { ArrowRight, Eye, EyeOff, LogOut } from 'lucide-react'
+import { ArrowRight, Eye, EyeOff } from 'lucide-react'
 import { UserAvatar, UserEmail } from '~components/user'
 
 import { signOut, useSession } from '~lib/auth'
@@ -19,10 +19,12 @@ export default function LockBox() {
   const session = useSession()
 
   const onSignOut = useCallback(async () => {
-    setLoading(true)
-    await signOut()
-    setLoading(false)
-  }, [])
+    if (!loading) {
+      setLoading(true)
+      await signOut()
+      setLoading(false)
+    }
+  }, [loading])
 
   const onUnlock = useCallback(async () => {
     if (!pwd || !session?.user.id) return
@@ -38,19 +40,9 @@ export default function LockBox() {
     <div className="w-full h-full flex flex-col gap-2">
       <div className="grow flex flex-col gap-2 items-center">
         <UserAvatar />
-        <div className="w-full flex flex-row gap-2 justify-center items-center">
-          <p className="text-center">
-            <UserEmail />
-          </p>
-          <button className="btn btn-xs btn-circle" onClick={onSignOut}>
-            <LogOut className={clsx('w-3 h-3', { hidden: loading })} />
-            <span
-              className={clsx('loading loading-spinner loading-xs', {
-                hidden: !loading,
-              })}
-            />
-          </button>
-        </div>
+        <p className="w-full text-center">
+          <UserEmail />
+        </p>
       </div>
       <div
         className={clsx(
@@ -91,9 +83,21 @@ export default function LockBox() {
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
-      <p className="w-full mt-2 text-center opacity-60 cursor-pointer hover:underline flex flex-row gap-2 justify-center items-center text-xs">
-        Forgot Password
-      </p>
+      <div className="w-full mt-2 flex flex-row gap-2 justify-center items-center">
+        <p className="opacity-60 cursor-pointer hover:underline text-xs">
+          Forgot Password
+        </p>
+        <span className="divider divider-horizontal m-0" />
+        <p
+          className={clsx('opacity-60 hover:underline text-xs', {
+            'cursor-not-allowed': loading,
+            'cursor-pointer': !loading,
+          })}
+          onClick={onSignOut}
+        >
+          Use another account
+        </p>
+      </div>
     </div>
   )
 }

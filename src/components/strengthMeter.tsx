@@ -14,7 +14,9 @@ export default function StrengthMeter({
   range = [0, 50],
 }: StrengthMeterProps) {
   const { resolvedTheme } = useTheme()
+
   const point = Math.round((value * 50) / (range[1] - range[0]))
+
   const base = useMemo(
     () => (resolvedTheme === 'dark' ? '#ffffff22' : '#00000022'),
     [resolvedTheme],
@@ -25,7 +27,7 @@ export default function StrengthMeter({
       {palette.map((bg, i) => (
         <motion.span
           key={bg}
-          className="w-[2px] h-2 rounded"
+          className="w-[2px] h-2 rounded-full"
           animate={{
             backgroundColor: point > i ? bg : base,
           }}
