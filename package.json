@@ -20,6 +20,7 @@
     "@plasmohq/storage": "^1.10.0",
     "@supabase/supabase-js": "^2.43.5",
     "axios": "^1.7.2",
+    "bn.js": "^5.2.1",
     "bs58": "^5.0.0",
     "clsx": "^2.1.1",
     "copy-to-clipboard": "^3.3.3",
@@ -46,6 +47,7 @@
   "devDependencies": {
     "@parcel/optimizer-data-url": "2.9.3",
     "@parcel/transformer-inline-string": "2.9.3",
+    "@types/bn.js": "^5.1.5",
     "@types/chrome": "^0.0.268",
     "@types/node": "^20.14.2",
     "@types/react": "^18.3.3",

@@ -3,6 +3,7 @@ import clsx from 'clsx'
 
 import { ArrowRight, Eye, EyeOff } from 'lucide-react'
 import StrengthMeter from '~components/strengthMeter'
+import { UserAvatar, UserEmail } from '~components/user'
 
 import { signOut, useSession } from '~lib/auth'
 import { Password } from '~lib/password'
@@ -42,15 +43,10 @@ export default function PasswordBox() {
   return (
     <div className="w-full h-full flex flex-col gap-2">
       <div className="grow flex flex-col gap-2 items-center">
-        <div className="avatar">
-          <div className="w-16 rounded-full ring-2 ring-base-100">
-            <img
-              src={session?.user?.user_metadata?.avatar_url}
-              alt={session?.user?.email}
-            />
-          </div>
-        </div>
-        <p className="w-full text-center">{session?.user?.email}</p>
+        <UserAvatar />
+        <p className="w-full text-center">
+          <UserEmail />
+        </p>
       </div>
       <div className="w-[calc(100%-2rem)] mx-4">
         <StrengthMeter value={passwordStrength(pwd)} />
