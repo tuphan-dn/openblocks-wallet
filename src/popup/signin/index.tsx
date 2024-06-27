@@ -1,11 +1,14 @@
-import { redirect, type RouteObject } from 'react-router-dom'
+import { redirect, type RouteObject, Outlet } from 'react-router-dom'
+import axios from 'axios'
 
-import Layout from './layout'
 import Page from './page'
 
 import { getSession } from '~lib/auth'
 import { Password } from '~lib/password'
-import axios from 'axios'
+
+export function Layout() {
+  return <Outlet />
+}
 
 const Signin: RouteObject = {
   path: 'signin',

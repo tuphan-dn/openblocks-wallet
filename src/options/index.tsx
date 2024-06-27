@@ -1,11 +1,23 @@
-import { createMemoryRouter, RouterProvider } from 'react-router-dom'
+import { createMemoryRouter, RouterProvider, Outlet } from 'react-router-dom'
 
+import UiProvider from '~providers/ui.provider'
 import Error from '~components/error'
-import Layout from './layout'
 import Page from './page'
 
 import { getSession } from '~lib/auth'
 import { Password } from '~lib/password'
+
+export function Layout() {
+  return (
+    <UiProvider>
+      <div className="w-full h-full grid grid-cols-1">
+        <div className="col-span-full">
+          <Outlet />
+        </div>
+      </div>
+    </UiProvider>
+  )
+}
 
 const router = createMemoryRouter([
   {

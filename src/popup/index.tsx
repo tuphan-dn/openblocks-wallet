@@ -1,10 +1,31 @@
-import { createMemoryRouter, RouterProvider } from 'react-router-dom'
+import {
+  createMemoryRouter,
+  RouterProvider,
+  Outlet,
+  useNavigation,
+} from 'react-router-dom'
 
-import Layout from './layout'
+import Splash from '~components/splash'
+import UiProvider from '~providers/ui.provider'
 import Page from './page'
 import App from './app'
 import Signin from './signin'
 import Error from '~components/error'
+
+export function Layout() {
+  const { state } = useNavigation()
+
+  return (
+    <UiProvider>
+      <div className="w-full h-full grid grid-cols-1">
+        <div className="col-span-full">
+          <Outlet />
+        </div>
+      </div>
+      <Splash open={state === 'loading'} />
+    </UiProvider>
+  )
+}
 
 const router = createMemoryRouter([
   {

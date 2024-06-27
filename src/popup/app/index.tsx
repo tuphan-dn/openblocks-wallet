@@ -1,12 +1,27 @@
-import { redirect, type RouteObject } from 'react-router-dom'
+import { redirect, type RouteObject, Outlet } from 'react-router-dom'
 
-import Layout from './layout'
 import Page from './page'
 import Token from './token'
 import Nft from './nft'
+import Navigation from './navigation'
 
 import { getSession } from '~lib/auth'
 import { Password } from '~lib/password'
+
+export function Layout() {
+  return (
+    <div className="w-full h-full flex flex-col relative">
+      <div className="w-full grow grid grid-cols-1">
+        <div className="col-span-full min-h-full">
+          <Outlet />
+        </div>
+      </div>
+      <div className="w-full sticky bottom-0 left-0">
+        <Navigation />
+      </div>
+    </div>
+  )
+}
 
 const App: RouteObject = {
   path: 'app',
