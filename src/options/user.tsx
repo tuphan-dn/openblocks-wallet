@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { Home } from 'lucide-react'
 import Modal from '~components/ui/modal'
+import { UserAvatar, UserEmail } from '~components/user'
 
 import { signOut, useSession } from '~lib/auth'
 import { Password } from '~lib/password'
@@ -19,16 +20,11 @@ export default function User() {
 
   return (
     <div className="w-full flex flex-row gap-4 items-center p-2">
-      <div className="avatar">
-        <div className="w-16 rounded-full ring-2 ring-base-100">
-          <img
-            src={session?.user?.user_metadata?.avatar_url}
-            alt={session?.user?.email}
-          />
-        </div>
-      </div>
+      <UserAvatar />
       <div className="grow flex flex-col gap-1 min-w-0">
-        <p className="truncate">{session?.user?.email}</p>
+        <p className="truncate">
+          <UserEmail />
+        </p>
         <span className="flex flex-row gap-1 items-center">
           <p
             className="text-xs opacity-60 cursor-pointer hover:underline"

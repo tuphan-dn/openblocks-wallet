@@ -26,6 +26,9 @@ dependencies:
   axios:
     specifier: ^1.7.2
     version: 1.7.2
+  bn.js:
+    specifier: ^5.2.1
+    version: 5.2.1
   bs58:
     specifier: ^5.0.0
     version: 5.0.0
@@ -100,6 +103,9 @@ devDependencies:
   '@parcel/transformer-inline-string':
     specifier: 2.9.3
     version: 2.9.3(@parcel/core@2.9.3)
+  '@types/bn.js':
+    specifier: ^5.1.5
+    version: 5.1.5
   '@types/chrome':
     specifier: ^0.0.268
     version: 0.0.268
@@ -3009,6 +3015,12 @@ packages:
     engines: {node: '>=10.13.0'}
     dev: false
 
+  /@types/bn.js@5.1.5:
+    resolution: {integrity: sha512-V46N0zwKRF5Q00AZ6hWtN0T8gGmDUaUzLWQvHFo5yThtVwK/VCenFY3wXVbOvNfajEpsTfQM4IN9k/d6gUVX3A==}
+    dependencies:
+      '@types/node': 20.14.2
+    dev: true
+
   /@types/chrome@0.0.268:
     resolution: {integrity: sha512-7N1QH9buudSJ7sI8Pe4mBHJr5oZ48s0hcanI9w3wgijAlv1OZNUZve9JR4x42dn5lJ5Sm87V1JNfnoh10EnQlA==}
     dependencies:
@@ -3595,6 +3607,10 @@ packages:
 
   /bluebird@3.7.2:
     resolution: {integrity: sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==}
+    dev: false
+
+  /bn.js@5.2.1:
+    resolution: {integrity: sha512-eXRvHzWyYPBuB4NBy0cmYQjGitUrtqwbvlzP3G6VFnNRbsZQIxQ10PbKKHt8gZ/HW/D/747aDl+QkDqg3KQLMQ==}
     dev: false
 
   /boolbase@1.0.0:

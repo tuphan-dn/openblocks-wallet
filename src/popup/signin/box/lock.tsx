@@ -4,6 +4,7 @@ import { useAnimate } from 'framer-motion'
 import clsx from 'clsx'
 
 import { ArrowRight, Eye, EyeOff, LogOut } from 'lucide-react'
+import { UserAvatar, UserEmail } from '~components/user'
 
 import { signOut, useSession } from '~lib/auth'
 import { Password } from '~lib/password'
@@ -36,16 +37,11 @@ export default function LockBox() {
   return (
     <div className="w-full h-full flex flex-col gap-2">
       <div className="grow flex flex-col gap-2 items-center">
-        <div className="avatar">
-          <div className="w-20 rounded-full ring-2 ring-base-100">
-            <img
-              src={session?.user?.user_metadata?.avatar_url}
-              alt={session?.user?.email}
-            />
-          </div>
-        </div>
+        <UserAvatar />
         <div className="w-full flex flex-row gap-2 justify-center items-center">
-          <p className="text-center">{session?.user?.email}</p>
+          <p className="text-center">
+            <UserEmail />
+          </p>
           <button className="btn btn-xs btn-circle" onClick={onSignOut}>
             <LogOut className={clsx('w-3 h-3', { hidden: loading })} />
             <span
