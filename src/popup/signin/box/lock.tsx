@@ -18,22 +18,20 @@ export default function LockBox() {
   const [scope, animate] = useAnimate()
   const session = useSession()
 
-  const onSignOut = useCallback(async () => {
-    if (!loading) {
-      setLoading(true)
-      await signOut()
-      setLoading(false)
-    }
-  }, [loading])
-
   const onUnlock = useCallback(async () => {
-    if (!pwd || !session?.user.id) return
-    const vault = new Vault(session.user.id)
-    const unlocked = await vault.unlock(pwd)
-    if (!unlocked) {
+    try {
+      setLoading(true)
+      if (!session?.user.id) throw new Error('Unauthorized request')
+      if (!pwd) throw new Error('Empty password')
+      const vault = new Vault(session.user.id)
+      await vault.unlock(pwd)
+      navigate('/app')
+    } catch {
       animate(scope.current, { translateX: [0, 5, -5, 0] }, { duration: 0.1 })
       setError('Wrong password')
-    } else navigate('/app')
+    } finally {
+      setLoading(false)
+    }
   }, [session?.user.id, pwd, navigate, scope, animate])
 
   return (
@@ -78,7 +76,7 @@ export default function LockBox() {
         <button
           className="btn btn-sm btn-primary btn-square -mx-2"
           onClick={onUnlock}
-          disabled={!pwd}
+          disabled={!pwd || loading}
         >
           <ArrowRight className="w-4 h-4" />
         </button>
@@ -88,13 +86,7 @@ export default function LockBox() {
           Forgot Password
         </p>
         <span className="divider divider-horizontal m-0" />
-        <p
-          className={clsx('opacity-60 hover:underline text-xs', {
-            'cursor-not-allowed': loading,
-            'cursor-pointer': !loading,
-          })}
-          onClick={onSignOut}
-        >
+        <p className="opacity-60 hover:underline text-xs" onClick={signOut}>
           Use another account
         </p>
       </div>
