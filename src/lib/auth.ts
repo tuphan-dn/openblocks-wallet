@@ -1,5 +1,5 @@
 import { useAsync } from 'react-use'
-import { Password } from './password'
+import { Vault } from './vault'
 import { supabase } from './supabase'
 import type { AuthRequest } from '~background/messages/auth'
 import { sendToBackground } from '@plasmohq/messaging'
@@ -28,7 +28,7 @@ export const signOut = async () => {
   const session = await getSession()
   if (!session) return
   await supabase.auth.signOut()
-  const password = new Password(session.user.id)
-  await password.set()
+  const vault = new Vault(session.user.id)
+  await vault.remove()
   location.reload()
 }

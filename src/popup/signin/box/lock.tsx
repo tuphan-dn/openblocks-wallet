@@ -7,7 +7,7 @@ import { ArrowRight, Eye, EyeOff } from 'lucide-react'
 import { UserAvatar, UserEmail } from '~components/user'
 
 import { signOut, useSession } from '~lib/auth'
-import { Password } from '~lib/password'
+import { Vault } from '~lib/vault'
 
 export default function LockBox() {
   const [loading, setLoading] = useState(false)
@@ -28,8 +28,8 @@ export default function LockBox() {
 
   const onUnlock = useCallback(async () => {
     if (!pwd || !session?.user.id) return
-    const password = new Password(session.user.id)
-    const unlocked = await password.unlock(pwd)
+    const vault = new Vault(session.user.id)
+    const unlocked = await vault.unlock(pwd)
     if (!unlocked) {
       animate(scope.current, { translateX: [0, 5, -5, 0] }, { duration: 0.1 })
       setError('Wrong password')

@@ -1,13 +1,21 @@
-import { createMemoryRouter, RouterProvider, Outlet } from 'react-router-dom'
+import {
+  createMemoryRouter,
+  RouterProvider,
+  Outlet,
+  useNavigation,
+} from 'react-router-dom'
 
-import UiProvider from '~providers/ui.provider'
 import Error from '~components/error'
+import Splash from '~components/splash'
 import Page from './page'
 
-import { getSession } from '~lib/auth'
-import { Password } from '~lib/password'
+import UiProvider from '~providers/ui.provider'
 
-export function Layout() {
+import { getSession } from '~lib/auth'
+import { Vault } from '~lib/vault'
+
+function Layout() {
+  const { state } = useNavigation()
   return (
     <UiProvider>
       <div className="w-full h-full grid grid-cols-1">
@@ -15,6 +23,7 @@ export function Layout() {
           <Outlet />
         </div>
       </div>
+      <Splash open={state === 'loading'} />
     </UiProvider>
   )
 }
@@ -27,9 +36,9 @@ const router = createMemoryRouter([
     loader: async () => {
       const session = await getSession()
       if (!session) return location.assign('/popup.html')
-      const password = new Password(session.user.id)
-      const initialized = await password.isInitialized()
-      const unlocked = await password.isUnlocked()
+      const vault = new Vault(session.user.id)
+      const initialized = await vault.isInitialized()
+      const unlocked = await vault.isUnlocked()
       if (!initialized || !unlocked) return location.assign('/popup.html')
       return {}
     },

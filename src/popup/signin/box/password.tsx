@@ -1,14 +1,15 @@
 import { useCallback, useState } from 'react'
 import clsx from 'clsx'
-import { z } from 'zod'
+import axios from 'axios'
 
 import { ArrowRight, Eye, EyeOff } from 'lucide-react'
 import StrengthMeter from '~components/strengthMeter'
 import { UserAvatar, UserEmail } from '~components/user'
 
 import { signOut, useSession } from '~lib/auth'
-import { Password } from '~lib/password'
-import { useSafeRouteLoaderData } from '~lib/hooks/useLoader'
+import { Vault } from '~lib/vault'
+import { usePushMessage } from '~components/message/store'
+import { diagnosisError } from '~lib/utils'
 
 function passwordStrength(pwd: string) {
   let point = 0
@@ -27,25 +28,39 @@ export default function PasswordBox() {
   const [loading, setLoading] = useState(false)
   const [hidden, setHidden] = useState(true)
   const [pwd, setPwd] = useState('')
+  const pushMessage = usePushMessage()
   const session = useSession()
-  const { secret_share } = useSafeRouteLoaderData(
-    'signin',
-    z.object({ secret_share: z.object({ secret: z.string() }).optional() }),
-  )
-  console.log(secret_share)
-
-  const onSignOut = useCallback(async () => {
-    setLoading(true)
-    await signOut()
-    setLoading(false)
-  }, [])
 
   const onSubmit = useCallback(async () => {
-    if (!pwd || !session?.user.id) return
-    const password = new Password(session.user.id)
-    await password.set(pwd)
-    location.reload()
-  }, [session?.user.id, pwd])
+    try {
+      setLoading(true)
+      if (!pwd) throw new Error('Empty password')
+      if (!session?.user.id) throw new Error('Unauthorized request')
+      const vault = new Vault(session.user.id)
+      const { localshare, cloudshare } = await vault.new(pwd)
+      const pubkey = await vault.set(pwd, localshare)
+      const {
+        data: { error },
+      } = await axios.post<EdgeResponse<SecretShare[]>>(
+        'https://wkktjwtivwbkjnjyfwxb.supabase.co/functions/v1/secret-share',
+        {
+          id: pubkey,
+          secret: cloudshare,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        },
+      )
+      if (error) throw new Error(error.message)
+      location.reload()
+    } catch (er) {
+      pushMessage('error', diagnosisError(er))
+    } finally {
+      setLoading(false)
+    }
+  }, [session?.user.id, pwd, pushMessage])
 
   return (
     <div className="w-full h-full flex flex-col gap-2">
@@ -80,21 +95,21 @@ export default function PasswordBox() {
         <button
           className="btn btn-sm btn-primary btn-square -mx-2"
           onClick={onSubmit}
-          disabled={!pwd}
+          disabled={!pwd || loading}
         >
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className={clsx('w-4 h-4', { hidden: loading })} />
+          <span
+            className={clsx('loading loading-spinner loading-xs', {
+              hidden: !loading,
+            })}
+          />
         </button>
       </div>
       <p
-        className="w-full mt-2 text-center opacity-60 cursor-pointer hover:underline flex flex-row gap-2 justify-center items-center"
-        onClick={onSignOut}
+        className="w-full mt-2 text-center opacity-60 cursor-pointer hover:underline flex flex-row gap-2 justify-center items-center text-xs"
+        onClick={signOut}
       >
-        <span className="text-xs">Use another account</span>
-        <span
-          className={clsx('loading loading-spinner loading-xs', {
-            hidden: !loading,
-          })}
-        />
+        Use another account
       </p>
     </div>
   )

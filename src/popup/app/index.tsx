@@ -6,10 +6,11 @@ import Nft from './nft'
 import Navigation from './navigation'
 
 import { getSession } from '~lib/auth'
-import { Password } from '~lib/password'
+import { Vault } from '~lib/vault'
 
-export function Layout() {
-  return (
+const App: RouteObject = {
+  path: 'app',
+  element: (
     <div className="w-full h-full flex flex-col relative">
       <div className="w-full grow grid grid-cols-1">
         <div className="col-span-full min-h-full">
@@ -20,18 +21,13 @@ export function Layout() {
         <Navigation />
       </div>
     </div>
-  )
-}
-
-const App: RouteObject = {
-  path: 'app',
-  element: <Layout />,
+  ),
   loader: async () => {
     const session = await getSession()
     if (!session) return redirect('/signin')
-    const password = new Password(session.user.id)
-    const initialized = await password.isInitialized()
-    const unlocked = await password.isUnlocked()
+    const vault = new Vault(session.user.id)
+    const initialized = await vault.isInitialized()
+    const unlocked = await vault.isUnlocked()
     if (!initialized || !unlocked) return redirect('/signin')
     return { session }
   },

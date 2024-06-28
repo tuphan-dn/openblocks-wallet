@@ -13,8 +13,10 @@
     "lint:watch": "nodemon --watch src --ext ts,tsx --exec 'pnpm lint' --signal SIGTERM"
   },
   "dependencies": {
+    "@gears-bot/crypto": "^1.0.2",
     "@headlessui/react": "^2.0.4",
     "@icons-pack/react-simple-icons": "^9.5.0",
+    "@noble/curves": "^1.4.0",
     "@noble/hashes": "^1.4.0",
     "@plasmohq/messaging": "^0.6.2",
     "@plasmohq/storage": "^1.10.0",
