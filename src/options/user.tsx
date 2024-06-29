@@ -5,7 +5,7 @@ import Modal from '~components/ui/modal'
 import { UserAvatar, UserEmail } from '~components/user'
 
 import { signOut, useSession } from '~lib/auth'
-import { Password } from '~lib/password'
+import { Vault } from '~lib/vault'
 
 export default function User() {
   const [open, setOpen] = useState(false)
@@ -13,8 +13,8 @@ export default function User() {
 
   const onLock = useCallback(async () => {
     if (!session) return
-    const password = new Password(session.user.id)
-    await password.lock()
+    const vault = new Vault(session)
+    await vault.lock()
     location.reload()
   }, [session])
 

@@ -2,12 +2,14 @@ import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAnimate } from 'framer-motion'
 import clsx from 'clsx'
+import { z } from 'zod'
 
 import { ArrowRight, Eye, EyeOff } from 'lucide-react'
 import { UserAvatar, UserEmail } from '~components/user'
 
 import { signOut, useSession } from '~lib/auth'
-import { Password } from '~lib/password'
+import { Vault, type ExtendedSecretShare } from '~lib/vault'
+import { useSafeRouteLoaderData } from '~lib/hooks/useLoader'
 
 export default function LockBox() {
   const [loading, setLoading] = useState(false)
@@ -17,24 +19,36 @@ export default function LockBox() {
   const navigate = useNavigate()
   const [scope, animate] = useAnimate()
   const session = useSession()
-
-  const onSignOut = useCallback(async () => {
-    if (!loading) {
-      setLoading(true)
-      await signOut()
-      setLoading(false)
-    }
-  }, [loading])
+  const { cloudshare } = useSafeRouteLoaderData(
+    'signin',
+    z.object({
+      cloudshare: z
+        .custom<ExtendedSecretShare>((e: string) =>
+          e.split('/').reduce((a, b) => a && !!b, true),
+        )
+        .optional(),
+    }),
+  )
 
   const onUnlock = useCallback(async () => {
-    if (!pwd || !session?.user.id) return
-    const password = new Password(session.user.id)
-    const unlocked = await password.unlock(pwd)
-    if (!unlocked) {
+    try {
+      setLoading(true)
+      if (!session) throw new Error('Unauthorized request')
+      if (!pwd) throw new Error('Empty password')
+      const vault = new Vault(session)
+      if (!cloudshare) await vault.unlock(pwd)
+      else {
+        const { localshare } = vault.new(pwd, cloudshare)
+        await vault.set(pwd, localshare)
+      }
+      navigate('/app')
+    } catch {
       animate(scope.current, { translateX: [0, 5, -5, 0] }, { duration: 0.1 })
       setError('Wrong password')
-    } else navigate('/app')
-  }, [session?.user.id, pwd, navigate, scope, animate])
+    } finally {
+      setLoading(false)
+    }
+  }, [session, pwd, cloudshare, navigate, scope, animate])
 
   return (
     <div className="w-full h-full flex flex-col gap-2">
@@ -78,7 +92,7 @@ export default function LockBox() {
         <button
           className="btn btn-sm btn-primary btn-square -mx-2"
           onClick={onUnlock}
-          disabled={!pwd}
+          disabled={!pwd || loading}
         >
           <ArrowRight className="w-4 h-4" />
         </button>
@@ -88,13 +102,7 @@ export default function LockBox() {
           Forgot Password
         </p>
         <span className="divider divider-horizontal m-0" />
-        <p
-          className={clsx('opacity-60 hover:underline text-xs', {
-            'cursor-not-allowed': loading,
-            'cursor-pointer': !loading,
-          })}
-          onClick={onSignOut}
-        >
+        <p className="opacity-60 hover:underline text-xs" onClick={signOut}>
           Use another account
         </p>
       </div>

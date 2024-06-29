@@ -41,14 +41,14 @@ export default function Alert({
   return (
     <div
       className={clsx(
-        'cursor-pointer flex flex-row items-center gap-2 shadow-lg !w-[calc(100%-1rem)] rounded-box p-4 backdrop-blur',
+        'w-full cursor-pointer flex flex-row items-center gap-2 shadow-lg rounded-box p-4 backdrop-blur',
         alert,
       )}
       onClick={() => onClick()}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <p className="text-xs whitespace-normal">{message}</p>
+      <p className="grow text-xs whitespace-normal">{message}</p>
       <div
         className="radial-progress cursor-pointer shrink-0"
         style={

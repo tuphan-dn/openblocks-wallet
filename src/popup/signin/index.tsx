@@ -1,39 +1,28 @@
-import { redirect, type RouteObject } from 'react-router-dom'
+import { redirect, type RouteObject, Outlet } from 'react-router-dom'
 
-import Layout from './layout'
 import Page from './page'
 
 import { getSession } from '~lib/auth'
-import { Password } from '~lib/password'
-import axios from 'axios'
+import { Vault } from '~lib/vault'
 
 const Signin: RouteObject = {
   path: 'signin',
   id: 'signin',
-  element: <Layout />,
+  element: <Outlet />,
   loader: async () => {
     const session = await getSession()
     if (!session) return { layout: ['social', 'password', 'lock'] }
-
-    const {
-      data: { data, error },
-    } = await axios.get<EdgeResponse<SecretShare[]>>(
-      'https://wkktjwtivwbkjnjyfwxb.supabase.co/functions/v1/secret-share',
-      {
-        headers: { Authorization: `Bearer ${session.access_token}` },
-      },
-    )
-    if (error) throw new Error(error.message)
-    const secret_share = (data || [])[0]
-    const password = new Password(session.user.id)
-    const initialized = await password.isInitialized()
-    if (!initialized)
-      return { layout: ['password', 'lock', 'social'], secret_share }
-
-    const unlocked = await password.isUnlocked()
-    if (!unlocked)
-      return { layout: ['lock', 'social', 'password'], secret_share }
-    return redirect('/')
+    const vault = new Vault(session)
+    const initialized = await vault.isInitialized()
+    const unlocked = await vault.isUnlocked()
+    if (!initialized) {
+      const cloudshare = await vault.get()
+      if (!cloudshare) return { layout: ['password', 'lock', 'social'] }
+      else return { layout: ['lock', 'social', 'password'], cloudshare }
+    } else {
+      if (!unlocked) return { layout: ['lock', 'social', 'password'] }
+      else return redirect('/')
+    }
   },
   children: [
     {

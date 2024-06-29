@@ -6,7 +6,7 @@ export default function Message() {
   const messages = useMessage(({ messages }) => messages)
 
   return (
-    <div className="toast toast-bottom toast-end flex flex-col items-end p-0 -translate-x-2 -translate-y-2 z-10">
+    <div className="w-[calc(100%-1rem)] toast toast-bottom toast-end flex flex-col items-end p-0 -translate-x-2 -translate-y-2 z-10">
       {messages.map((msg) => (
         <Alert key={msg.id} {...msg} />
       ))}
