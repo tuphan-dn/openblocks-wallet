@@ -13,7 +13,7 @@ export default function User() {
 
   const onLock = useCallback(async () => {
     if (!session) return
-    const vault = new Vault(session.user.id)
+    const vault = new Vault(session)
     await vault.lock()
     location.reload()
   }, [session])

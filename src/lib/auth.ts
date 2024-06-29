@@ -28,7 +28,7 @@ export const signOut = async () => {
   const session = await getSession()
   if (!session) return
   await supabase.auth.signOut()
-  const vault = new Vault(session.user.id)
+  const vault = new Vault(session)
   await vault.remove()
   location.reload()
 }

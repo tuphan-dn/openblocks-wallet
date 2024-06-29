@@ -79,8 +79,8 @@ export class Vault extends CloudStorage {
 
   constructor(session: Session) {
     super(session)
-    this.LOCALSHARE = `${session.user.id}/localshare`
-    this.PASSWORD = `${session.user.id}/password`
+    this.LOCALSHARE = `${this.session.user.id}/localshare`
+    this.PASSWORD = `${this.session.user.id}/password`
   }
 
   private verify = (pwd: string, shares: ExtendedSecretShare[]) => {

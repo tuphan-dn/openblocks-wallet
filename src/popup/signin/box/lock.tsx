@@ -42,8 +42,7 @@ export default function LockBox() {
         await vault.set(pwd, localshare)
       }
       navigate('/app')
-    } catch (er) {
-      console.trace(er)
+    } catch {
       animate(scope.current, { translateX: [0, 5, -5, 0] }, { duration: 0.1 })
       setError('Wrong password')
     } finally {
