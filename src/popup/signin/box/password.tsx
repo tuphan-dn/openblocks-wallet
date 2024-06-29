@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react'
 import clsx from 'clsx'
-import axios from 'axios'
 
 import { ArrowRight, Eye, EyeOff } from 'lucide-react'
 import StrengthMeter from '~components/strengthMeter'
@@ -10,6 +9,7 @@ import { signOut, useSession } from '~lib/auth'
 import { Vault } from '~lib/vault'
 import { usePushMessage } from '~components/message/store'
 import { diagnosisError } from '~lib/utils'
+import { Backup } from '~lib/backup'
 
 function passwordStrength(pwd: string) {
   let point = 0
@@ -35,32 +35,19 @@ export default function PasswordBox() {
     try {
       setLoading(true)
       if (!pwd) throw new Error('Empty password')
-      if (!session?.user.id) throw new Error('Unauthorized request')
+      if (!session) throw new Error('Unauthorized request')
       const vault = new Vault(session.user.id)
+      const backup = new Backup(session.access_token)
       const { localshare, cloudshare } = await vault.new(pwd)
       const pubkey = await vault.set(pwd, localshare)
-      const {
-        data: { error },
-      } = await axios.post<EdgeResponse<SecretShare[]>>(
-        'https://wkktjwtivwbkjnjyfwxb.supabase.co/functions/v1/secret-share',
-        {
-          id: pubkey,
-          secret: cloudshare,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${session.access_token}`,
-          },
-        },
-      )
-      if (error) throw new Error(error.message)
+      await backup.post(pubkey, cloudshare)
       location.reload()
     } catch (er) {
       pushMessage('error', diagnosisError(er))
     } finally {
       setLoading(false)
     }
-  }, [session?.user.id, pwd, pushMessage])
+  }, [session, pwd, pushMessage])
 
   return (
     <div className="w-full h-full flex flex-col gap-2">
