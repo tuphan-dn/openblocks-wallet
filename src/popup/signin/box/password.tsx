@@ -9,7 +9,6 @@ import { signOut, useSession } from '~lib/auth'
 import { Vault } from '~lib/vault'
 import { usePushMessage } from '~components/message/store'
 import { diagnosisError } from '~lib/utils'
-import { Backup } from '~lib/backup'
 
 function passwordStrength(pwd: string) {
   let point = 0
@@ -36,11 +35,10 @@ export default function PasswordBox() {
       setLoading(true)
       if (!pwd) throw new Error('Empty password')
       if (!session) throw new Error('Unauthorized request')
-      const vault = new Vault(session.user.id)
-      const backup = new Backup(session.access_token)
-      const { localshare, cloudshare } = await vault.new(pwd)
+      const vault = new Vault(session)
+      const { localshare, cloudshare } = vault.new(pwd)
       const pubkey = await vault.set(pwd, localshare)
-      await backup.post(pubkey, cloudshare)
+      await vault.post(pubkey, cloudshare)
       location.reload()
     } catch (er) {
       pushMessage('error', diagnosisError(er))

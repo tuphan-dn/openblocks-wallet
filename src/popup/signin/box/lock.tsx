@@ -2,12 +2,14 @@ import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAnimate } from 'framer-motion'
 import clsx from 'clsx'
+import { z } from 'zod'
 
 import { ArrowRight, Eye, EyeOff } from 'lucide-react'
 import { UserAvatar, UserEmail } from '~components/user'
 
 import { signOut, useSession } from '~lib/auth'
-import { Vault } from '~lib/vault'
+import { Vault, type ExtendedSecretShare } from '~lib/vault'
+import { useSafeRouteLoaderData } from '~lib/hooks/useLoader'
 
 export default function LockBox() {
   const [loading, setLoading] = useState(false)
@@ -17,22 +19,37 @@ export default function LockBox() {
   const navigate = useNavigate()
   const [scope, animate] = useAnimate()
   const session = useSession()
+  const { cloudshare } = useSafeRouteLoaderData(
+    'signin',
+    z.object({
+      cloudshare: z
+        .custom<ExtendedSecretShare>((e: string) =>
+          e.split('/').reduce((a, b) => a && !!b, true),
+        )
+        .optional(),
+    }),
+  )
 
   const onUnlock = useCallback(async () => {
     try {
       setLoading(true)
-      if (!session?.user.id) throw new Error('Unauthorized request')
+      if (!session) throw new Error('Unauthorized request')
       if (!pwd) throw new Error('Empty password')
-      const vault = new Vault(session.user.id)
-      await vault.unlock(pwd)
+      const vault = new Vault(session)
+      if (!cloudshare) await vault.unlock(pwd)
+      else {
+        const { localshare } = vault.new(pwd, cloudshare)
+        await vault.set(pwd, localshare)
+      }
       navigate('/app')
-    } catch {
+    } catch (er) {
+      console.trace(er)
       animate(scope.current, { translateX: [0, 5, -5, 0] }, { duration: 0.1 })
       setError('Wrong password')
     } finally {
       setLoading(false)
     }
-  }, [session?.user.id, pwd, navigate, scope, animate])
+  }, [session, pwd, cloudshare, navigate, scope, animate])
 
   return (
     <div className="w-full h-full flex flex-col gap-2">

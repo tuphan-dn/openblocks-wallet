@@ -36,10 +36,9 @@ const router = createMemoryRouter([
     loader: async () => {
       const session = await getSession()
       if (!session) return location.assign('/popup.html')
-      const vault = new Vault(session.user.id)
-      const initialized = await vault.isInitialized()
+      const vault = new Vault(session)
       const unlocked = await vault.isUnlocked()
-      if (!initialized || !unlocked) return location.assign('/popup.html')
+      if (!unlocked) return location.assign('/popup.html')
       return {}
     },
     children: [

@@ -25,10 +25,9 @@ const App: RouteObject = {
   loader: async () => {
     const session = await getSession()
     if (!session) return redirect('/signin')
-    const vault = new Vault(session.user.id)
-    const initialized = await vault.isInitialized()
+    const vault = new Vault(session)
     const unlocked = await vault.isUnlocked()
-    if (!initialized || !unlocked) return redirect('/signin')
+    if (!unlocked) return redirect('/signin')
     return { session }
   },
   children: [
