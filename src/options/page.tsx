@@ -1,3 +1,4 @@
+import DangerousZone from './dangerousZone'
 import General from './general'
 import User from './user'
 
@@ -9,6 +10,9 @@ export default function Page() {
       </div>
       <div className="col-span-full">
         <General />
+      </div>
+      <div className="col-span-full">
+        <DangerousZone />
       </div>
     </div>
   )

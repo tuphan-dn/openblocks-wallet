@@ -39,12 +39,13 @@ export class CloudStorage {
     return this.buildCloudshare(secretShare)
   }
 
-  post = async (pubkey: string, cloudshare: string) => {
+  post = async (cloudshare: ExtendedSecretShare) => {
+    const [id, secret] = cloudshare.split('/')
     const {
       data: { data, error },
     } = await axios.post<EdgeResponse<SecretShare[]>>(
       this.url,
-      { id: pubkey, secret: cloudshare },
+      { id, secret },
       { headers: this.headers },
     )
     if (error) throw new Error(error.message)
@@ -52,12 +53,12 @@ export class CloudStorage {
     return this.buildCloudshare(secretShare)
   }
 
-  patch = async (cloudshare: string) => {
+  patch = async (secret: string) => {
     const {
       data: { data, error },
     } = await axios.patch<EdgeResponse<SecretShare[]>>(
       this.url,
-      { secret: cloudshare },
+      { secret },
       { headers: this.headers },
     )
     if (error) throw new Error(error.message)
@@ -75,7 +76,7 @@ export class Vault extends CloudStorage {
   private sessionStorage = new Storage({ area: 'session' })
   private LOCALSHARE: string
   private PASSWORD: string
-  public ss = new SecretSharing(new FiniteField(secp256k1.CURVE.n, 'be'))
+  private ss = new SecretSharing(new FiniteField(secp256k1.CURVE.n, 'be'))
 
   constructor(session: Session) {
     super(session)

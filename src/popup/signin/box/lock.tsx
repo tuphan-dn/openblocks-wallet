@@ -102,7 +102,10 @@ export default function LockBox() {
           Forgot Password
         </p>
         <span className="divider divider-horizontal m-0" />
-        <p className="opacity-60 hover:underline text-xs" onClick={signOut}>
+        <p
+          className="opacity-60 hover:underline text-xs cursor-pointer"
+          onClick={signOut}
+        >
           Use another account
         </p>
       </div>

@@ -37,8 +37,8 @@ export default function PasswordBox() {
       if (!session) throw new Error('Unauthorized request')
       const vault = new Vault(session)
       const { localshare, cloudshare } = vault.new(pwd)
-      const pubkey = await vault.set(pwd, localshare)
-      await vault.post(pubkey, cloudshare)
+      await vault.set(pwd, localshare)
+      await vault.post(cloudshare)
       location.reload()
     } catch (er) {
       pushMessage('error', diagnosisError(er))
@@ -91,7 +91,7 @@ export default function PasswordBox() {
         </button>
       </div>
       <p
-        className="w-full mt-2 text-center opacity-60 cursor-pointer hover:underline flex flex-row gap-2 justify-center items-center text-xs"
+        className="w-full mt-2 text-center opacity-60 cursor-pointer hover:underline text-xs"
         onClick={signOut}
       >
         Use another account
