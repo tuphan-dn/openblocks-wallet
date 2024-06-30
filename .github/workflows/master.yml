@@ -1,4 +1,4 @@
-name: Deploy Function
+name: Deploy Edge Functions
 
 on:
   push:
