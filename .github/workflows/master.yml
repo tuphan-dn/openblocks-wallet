@@ -2,9 +2,7 @@ name: Deploy Function
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [master]
 
 jobs:
   deploy:
