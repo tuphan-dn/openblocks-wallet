@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { Home } from 'lucide-react'
+import { Home, Unlock } from 'lucide-react'
 import { UserAvatar, UserEmail } from '~components/user'
 
 import { useSession } from '~lib/auth'
@@ -24,10 +24,11 @@ export default function User() {
           <UserEmail />
         </p>
         <p
-          className="text-xs opacity-60 cursor-pointer hover:underline"
+          className="flex flex-row gap-2 items-center opacity-60 cursor-pointer group"
           onClick={onLock}
         >
-          Lock Wallet
+          <Unlock className="w-3 h-3" />
+          <span className="text-xs group-hover:underline">Lock Wallet</span>
         </p>
       </div>
       <a
