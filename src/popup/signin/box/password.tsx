@@ -37,8 +37,8 @@ export default function PasswordBox() {
       if (!session) throw new Error('Unauthorized request')
       const vault = new Vault(session)
       const { localshare, cloudshare } = vault.new(pwd)
-      await vault.set(pwd, localshare)
       await vault.post(cloudshare)
+      await vault.set(pwd, localshare)
       location.reload()
     } catch (er) {
       pushMessage('error', diagnosisError(er))

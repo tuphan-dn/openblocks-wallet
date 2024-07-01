@@ -27,7 +27,7 @@ export function UserAvatar({ className = 'w-16' }: { className?: string }) {
     <div className="avatar">
       <div
         className={clsx(
-          'rounded-full bg-base-100 border-4 border-base-100',
+          'rounded-full bg-base-100/50 ring-4 ring-base-100/50',
           className,
         )}
       >
