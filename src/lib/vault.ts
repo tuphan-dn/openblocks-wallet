@@ -84,6 +84,10 @@ export class Vault extends CloudStorage {
     this.PASSWORD = `${this.session.user.id}/password`
   }
 
+  private hash = (str: string) => {
+    return keccak_256(new TextEncoder().encode(str))
+  }
+
   private verify = (pwd: string, shares: ExtendedSecretShare[]) => {
     const pubkeys = shares.map((s) => s.split('/')).map(([p]) => decode(p))
     if (!equal(...pubkeys)) throw new Error('Invalid shares or proof')
@@ -95,7 +99,7 @@ export class Vault extends CloudStorage {
       t: secret.subarray(8, 16),
       n: secret.subarray(16, 24),
       id: secret.subarray(24, 32),
-      secret: this.ss.ff.norm(keccak_256(pwd)).serialize(),
+      secret: this.ss.ff.norm(this.hash(pwd)).serialize(),
     })
     const privkey = this.ss.construct([mind, ...secrets])
     const proof = secp256k1.getPublicKey(privkey)
@@ -119,7 +123,7 @@ export class Vault extends CloudStorage {
       t: cloud.subarray(8, 16),
       n: cloud.subarray(16, 24),
       id: cloud.subarray(24, 32),
-      secret: this.ss.ff.norm(keccak_256(pwd)).serialize(),
+      secret: this.ss.ff.norm(this.hash(pwd)).serialize(),
     })
     const local = SecretSharing.compress({
       index: this.ss.ff.norm(2).serialize(8),
