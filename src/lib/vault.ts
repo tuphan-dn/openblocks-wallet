@@ -159,7 +159,18 @@ export class Vault extends CloudStorage {
     return !!pwd
   }
 
-  set = async (pwd: string, localshare: ExtendedSecretShare) => {
+  set = async (
+    pwd: string,
+    localshare: ExtendedSecretShare,
+    { strict = true }: { strict?: boolean } = {},
+  ) => {
+    if (strict) {
+      const exists = await this.localStorage.set(this.LOCALSHARE, localshare)
+      if (exists)
+        throw new Error(
+          "Cannot overide the localshare. If you understand what you're doing, set the 'strict' flag to false to override the current local share.",
+        )
+    }
     const { pubkey } = this.verify(pwd, [localshare])
     await this.sessionStorage.set(this.PASSWORD, pwd)
     await this.localStorage.set(this.LOCALSHARE, localshare)
