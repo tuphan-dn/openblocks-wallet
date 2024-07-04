@@ -44,7 +44,10 @@ export default function SocialBox() {
   return (
     <div className="w-full h-full flex flex-col gap-4">
       <p className="font-semibold text-sm grow mx-2 opacity-60">
-        Create and secure your wallets with social accounts.
+        Create and secure your wallets with social accounts.{' '}
+        <span className="text-info-content hover:underline cursor-pointer">
+          Learn more.
+        </span>
       </p>
       <div className="flex flex-row gap-2 justify-between">
         <GoogleButton />

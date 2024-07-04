@@ -5,15 +5,16 @@ import clsx from 'clsx'
 import { z } from 'zod'
 
 import { ArrowRight, Eye, EyeOff } from 'lucide-react'
-import { UserAvatar, UserEmail } from '~components/user'
+import { UserAvatar, UserEmail, UserSignOutModal } from '~components/user'
 
-import { signOut, useSession } from '~lib/auth'
+import { useSession } from '~lib/auth'
 import { Vault, type ExtendedSecretShare } from '~lib/vault'
 import { useSafeRouteLoaderData } from '~lib/hooks/useLoader'
 
 export default function LockBox() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [open, setOpen] = useState(false)
   const [hidden, setHidden] = useState(true)
   const [pwd, setPwd] = useState('')
   const navigate = useNavigate()
@@ -63,7 +64,7 @@ export default function LockBox() {
           'w-full input rounded-box bg-base-200 !outline-none flex flex-row items-center gap-4',
           {
             '!border-none': !error,
-            'input-error': error,
+            'input-bordered !border-error-content': error,
           },
         )}
         ref={scope}
@@ -86,7 +87,7 @@ export default function LockBox() {
             setError('')
             setPwd(e.target.value)
           }}
-          onKeyDown={(e) => e.key === 'Enter' && onUnlock()}
+          onKeyDown={(e) => e.key === 'Enter' && !loading && onUnlock()}
           autoFocus
         />
         <button
@@ -104,10 +105,11 @@ export default function LockBox() {
         <span className="divider divider-horizontal m-0" />
         <p
           className="opacity-60 hover:underline text-xs cursor-pointer"
-          onClick={signOut}
+          onClick={() => setOpen(true)}
         >
           Use another account
         </p>
+        <UserSignOutModal open={open} onCancel={() => setOpen(false)} />
       </div>
     </div>
   )
