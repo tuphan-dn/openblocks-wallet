@@ -54,6 +54,7 @@ export class CloudStorage {
   }
 
   patch = async (secret: string) => {
+    // TODO: what if someone hijack the session and update a malicious secret?
     const {
       data: { data, error },
     } = await axios.patch<EdgeResponse<SecretShare[]>>(

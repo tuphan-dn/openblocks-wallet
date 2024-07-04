@@ -61,6 +61,7 @@ module.exports = {
         },
         dark: {
           ...require('daisyui/src/theming/themes')['dark'],
+          // Main colors
           primary: '#eaff74',
           'primary-content': '#2a3007',
           secondary: '#f1f5f9', // slate-100
