@@ -89,6 +89,7 @@ export class Vault extends CloudStorage {
   }
 
   private verify = (pwd: string, shares: ExtendedSecretShare[]) => {
+    if (!pwd) throw new Error('Wrong password')
     const pubkeys = shares.map((s) => s.split('/')).map(([p]) => decode(p))
     if (!equal(...pubkeys)) throw new Error('Invalid shares or proof')
     const secrets = shares.map((s) => s.split('/')).map(([_, s]) => decode(s))
@@ -169,10 +170,12 @@ export class Vault extends CloudStorage {
     { strict = true }: { strict?: boolean } = {},
   ) => {
     if (strict) {
-      const exists = await this.localStorage.set(this.LOCALSHARE, localshare)
+      const exists = await this.localStorage.get<ExtendedSecretShare>(
+        this.LOCALSHARE,
+      )
       if (exists)
         throw new Error(
-          "Cannot overide the localshare. If you understand what you're doing, set the 'strict' flag to false to override the current local share.",
+          "Cannot overwrite the local share. If you understand what you're doing, set the `strict` flag to `false` to override the protection.",
         )
     }
     const { pubkey } = this.verify(pwd, [localshare])
@@ -181,7 +184,11 @@ export class Vault extends CloudStorage {
     return encode(pubkey)
   }
 
-  remove = async () => {
+  remove = async (pwd: string = '') => {
+    const localshare = await this.localStorage.get<ExtendedSecretShare>(
+      this.LOCALSHARE,
+    )
+    if (localshare) this.verify(pwd, [localshare])
     await this.sessionStorage.remove(this.PASSWORD)
     await this.localStorage.remove(this.LOCALSHARE)
   }

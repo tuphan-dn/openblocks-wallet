@@ -90,12 +90,14 @@ export default function PasswordBox() {
           />
         </button>
       </div>
-      <p
-        className="w-full mt-2 text-center opacity-60 cursor-pointer hover:underline text-xs"
-        onClick={signOut}
-      >
-        Use another account
-      </p>
+      <div className="w-full mt-2 flex flex-row gap-2 justify-center items-center">
+        <p
+          className="opacity-60 hover:underline text-xs cursor-pointer"
+          onClick={() => signOut()}
+        >
+          Use another account
+        </p>
+      </div>
     </div>
   )
 }

@@ -46,7 +46,7 @@ export default function EmailButton() {
         'input bg-base-200 !outline-none rounded-box flex flex-row gap-2 items-center',
         {
           '!border-none': !error,
-          'input-error': error,
+          'input-border !border-error-content': error,
         },
       )}
       ref={scope}

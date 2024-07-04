@@ -24,11 +24,11 @@ export const signIn = async (
   return await sendToBackground({ name: 'auth', body })
 }
 
-export const signOut = async () => {
+export const signOut = async (pwd?: string) => {
   const session = await getSession()
-  if (!session) return
-  await supabase.auth.signOut()
+  if (!session) throw new Error('Session ended')
   const vault = new Vault(session)
-  await vault.remove()
+  await vault.remove(pwd)
+  await supabase.auth.signOut()
   location.reload()
 }

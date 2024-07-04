@@ -8,7 +8,7 @@ export type ModalProps = {
   open?: boolean
   onCancel?: () => void
   children: ReactNode
-  closable?: boolean
+  visibleCloseButton?: boolean
   width?: string // https://daisyui.com/components/modal/#dialog-modal-with-custom-width
   height?: string
 }
@@ -17,7 +17,7 @@ export default function Modal({
   open = false,
   onCancel = () => {},
   children,
-  closable = true,
+  visibleCloseButton = true,
   width = '',
   height = '',
 }: ModalProps) {
@@ -36,7 +36,7 @@ export default function Modal({
         <button
           className={clsx(
             'btn btn-circle btn-ghost btn-xs absolute top-2 right-2',
-            { hidden: !closable },
+            { hidden: !visibleCloseButton },
           )}
           onClick={onCancel}
         >
